@@ -1,301 +1,203 @@
 /**
- * ScholarLoop Advanced AI Engine (Semantic NLP & Comprehensive Scholarship Knowledge Base)
- * Smart intent analyzer, multi-entity extractor, dynamic answer generator, and intelligent WhatsApp router (+249960714750)
+ * ScholarLoop Advanced AI Chat Engine
+ * Strict Logic Architecture:
+ * 1. Exclusive Greeting Response for Hello/Greetings.
+ * 2. Direct-First Precision Answers (Yes/No + Brief Answer FIRST) for direct questions.
+ * 3. Strict Scope & Polite Rephrase Request for Out-of-Domain / Unclear queries.
  */
 
 class ScholarLoopBotEngine {
   constructor() {
     this.advisorPhone = '249960714750';
     this.advisorWhatsappLink = `https://wa.me/${this.advisorPhone}?text=${encodeURIComponent('أهلاً، أود الاستفسار والتواصل مع المستشار الأكاديمي لمنصة ScholarLoop')}`;
-    
-    // Build Knowledge Base Matrix
-    this.initKnowledgeBase();
-  }
-
-  initKnowledgeBase() {
-    // Extensive Knowledge Entities
-    this.scholarshipsData = {
-      saudi: {
-        name: 'منحة المملكة العربية السعودية (منصة أدرس في السعودية)',
-        aliases: ['سعودية', 'السعودية', 'أدرس في السعودية', 'ادرس في السعودية', 'saudi', 'ksa'],
-        quotas: 'تقبل المملكة أعداداً كبيرة جداً سنوياً (عشرات الآلاف من الطلاب الدوليين من أكثر من 160 دولة)، وتعد من أكبر المنح في الطاقة الاستيعابية.',
-        stipend: 'راتب شهري منتظم (حوالي 840 إلى 1000 ريال سعودي شهرياً حسب المرحلة)، بالإضافة إلى بدل تجهيز ومكافأة تفوق.',
-        housing: 'سكن جامعي مؤثث ومجاني بالكامل شامل المرافق والانترنت.',
-        tickets: 'تذاكر طيران مجانية سنوياً (ذهاب وإياب لبلدك الأصلي).',
-        language: 'لا تشترط اللغة الإنجليزية لجميع التخصصات؛ حيث تتوفر معاهد لغة عربية مجانية للطلاب غير الناطقين بها، وبرامج إنجليزية للتخصصات العلمية والهندسية.',
-        acceptance: 'نسب قبول مرتفعة جداً؛ 80% فأعلى للكليات النظرية وإدارة الأعمال، 85% فأعلى للهندسة والحاسوب، و90% فأعلى للطب والمختبرات.',
-        age: 'البكالوريوس (17 - 25 سنة)، الماجستير (أقل من 30 سنة)، الدكتوراه (أقل من 35 سنة).'
-      },
-      turkey: {
-        name: 'المنحة التركية الحكومية (Türkiye Bursları)',
-        aliases: ['تركيا', 'التركية', 'تركية', 'turkey', 'burslari'],
-        quotas: 'تقبل المنحة التركية حوالي 5,000 طالب سنوياً من أصل أكثر من 160,000 متقدم حول العالم، والمنافسة قوية وتعتمد على الملف الشامل.',
-        stipend: 'راتب شهري (1700 ليرة للبكالوريوس، 2400 ليرة للماجستير، 3000 ليرة للدكتوراه - قابلة للتحديث).',
-        housing: 'سكن طلابي حكومي (KYK) مجاني شامل الوجبات الفطور والعشاء.',
-        tickets: 'تذكرة طيران مجانية عند القدوم لأول مرة وتذكرة عودة بعد التخرج.',
-        language: 'لا تشترط الإنجليزية أو التركية مسبقاً للقبول؛ حيث تمنح جميع المقبولين سنة تحضيرية مجانية لتعلم اللغة التركية (TÖMER).',
-        acceptance: 'الحد الأدنى: 70% للتخصصات الأدبية والإدارية، 75% للهندسة والعلوم، و90% للطب والسيادلة والأسنان.',
-        age: 'البكالوريوس (أقل من 21 سنة)، الماجستير (أقل من 30 سنة)، الدكتوراه (أقل من 35 سنة).'
-      },
-      germany: {
-        name: 'منح وقبولات ألمانيا (DAAD & Public Universities)',
-        aliases: ['المانيا', 'ألمانيا', 'داد', 'daad', 'germany'],
-        quotas: 'الجامعات الألمانية الحكومية شبه مجانية لجميع الطلاب، ومنح DAAD تقدم آلاف الفرص سنوياً للدراسات العليا.',
-        stipend: 'منحة DAAD تقدم راتباً شهرياً ممتازاً (حوالي 934 يورو للماجستير و1200 يورو للدكتوراه) شامل التأمين الصحي.',
-        housing: 'تتولى السكن الجامعي المكتسب عبر مكاتب الطلاب (Studentenwerk) بسعر رمزي، أو بدعم من المنحة.',
-        tickets: 'بدل سفر وتذاكر طيران لمقبولي منحة DAAD.',
-        language: 'تشترط الألمانية (B2/C1) للبرامج المعتمدة بالألمانية، أو الإنجليزية (IELTS 6.5+) للبرامج الدولية المعتمدة بالإنجليزية.',
-        acceptance: 'البكالوريوس يتطلب سنة تحضيرية (Studienkolleg) للشهادات الثانوية غير المعادلة، والماجستير يتطلب GPA 3.0+.',
-        age: 'لا يوجد حد صارم للعمر في ألمانيا، لكن يفضل تقارب السن مع المرحلة الدراسية.'
-      },
-      hungary: {
-        name: 'منحة الحكومة الهنغارية (Stipendium Hungaricum)',
-        aliases: ['هنغاريا', 'المجر', 'مجر', 'hungary', 'stipendium'],
-        quotas: 'تمنح أكثر من 5,000 منحة سنوياً لطلاب أكثر من 90 دولة شريكة.',
-        stipend: 'راتب شهري، مع إعفاء كامل من الرسوم الدراسية وتأمين صحي.',
-        housing: 'سكن جامعي مجاني أو بدل سكن شهري.',
-        tickets: 'تعتمد التذاكر على الدولة الشريكة.',
-        language: 'تتوفر معظم البرامج باللغة الإنجليزية بالكامل، ولا تشترط شهادة IELTS إذا كان إثبات اللغة من المدرسة/الجامعة مسبقاً أو عبر اختبار الجامعة الداخلي.',
-        acceptance: '70% فأعلى لمعظم التخصصات مع التقييم في المقابلة الشخصية عبر الإنترنت.'
-      },
-      egypt: {
-        name: 'منحة ومنصة إدرس في مصر (الوافدين)',
-        aliases: ['مصر', 'المصرية', 'ادرس في مصر', 'إدرس في مصر', 'egypt'],
-        quotas: 'طاقة استيعابية ضخمة جداً وتسهيلات خاصة وحسومات كبيرة للطلاب السودانيين والجنسيات العربية.',
-        stipend: 'رسوم دراسية مخفضة وتسهيلات في السداد ومنح جزئية وكاملة.',
-        housing: 'سكن جامعي في المدن الجامعية التابعة لجامعات القاهرة وأين شمس والإسكندرية وغيرها.',
-        language: 'الدراسة باللغة العربية أو الإنجليزية حسب الكلية والتخصص.'
-      }
-    };
   }
 
   /**
-   * Process natural language inputs dynamically using semantic intent extraction
+   * Process query with strict logic rules
    */
   async processQuery(userInput, lang = 'auto') {
     const rawText = userInput.trim();
     if (!rawText) return null;
 
+    const lowerText = rawText.toLowerCase();
     const isEnglish = /[a-zA-Z]/.test(rawText) && !/[\u0600-\u06FF]/.test(rawText);
     const chosenLang = lang === 'auto' ? (isEnglish ? 'en' : 'ar') : lang;
-    const cleanText = rawText.toLowerCase();
 
-    // Extract Entities & Numerical values
+    // Normalize text for clean matching
+    const cleanText = lowerText
+      .replace(/[إأآا]/g, 'ا')
+      .replace(/ة/g, 'ه')
+      .replace(/[؟?.,!]/g, '')
+      .trim();
+
+    // -------------------------------------------------------------
+    // RULE 1: EXCLUSIVE GREETINGS HANDLING
+    // If the input is purely a greeting or short hello phrase
+    // -------------------------------------------------------------
+    const isPureGreeting = /^(السلام عليكم|وعليكم السلام|اهلا|مرحبا|هلا|مرحبتين|صباح الخير|مساء الخير|سلام|hello|hi|hey|greetings)$/i.test(cleanText);
+    
+    if (isPureGreeting) {
+      return {
+        reply: chosenLang === 'ar'
+          ? `وعليكم السلام ورحمة الله وبركاته! 🎓\nأهلاً بك في مساعد **ScholarLoop** للمنح الدراسية. كيف يمكنني مساعدتك اليوم بخصوص المنح والشروط؟`
+          : `Hello and welcome to **ScholarLoop** Scholarship Assistant! 🎓\nHow can I help you today regarding scholarship applications and requirements?`,
+        lowConfidence: false,
+        suggestions: chosenLang === 'ar'
+          ? ['هل منحة ادرس في السعودية مفتوحة؟', 'نسبتي 80 في الشهادة السودانية هل أقدم للسعودية؟', 'هل تقبل أعداداً كبيرة؟', 'تواصل مع المستشار 📲']
+          : ['Is Saudi scholarship open?', 'High school evaluation', 'Quotas & Housing', 'Contact Advisor 📲']
+      };
+    }
+
+    // -------------------------------------------------------------
+    // RULE 2: DIRECT PRECISION ANSWERS (Yes/No + Direct Answer First)
+    // -------------------------------------------------------------
+
+    // Check numerical percentages (e.g. 80%, 85%, 90%, 70%)
     const percentMatch = rawText.match(/(\d{2,3})\s*[%٪]?/);
     const percentage = percentMatch ? parseInt(percentMatch[1], 10) : null;
 
-    // Detect matched country / scholarship program
-    let matchedCountryKey = null;
-    for (const [key, data] of Object.entries(this.scholarshipsData)) {
-      if (data.aliases.some(alias => cleanText.includes(alias))) {
-        matchedCountryKey = key;
-        break;
-      }
-    }
-
-    const countryObj = matchedCountryKey ? this.scholarshipsData[matchedCountryKey] : null;
-
-    // Intent Classifiers
-    const isAskingNumbersOrQuota = /(أعداد|اعداد|عدد|طاقة|كبيرة|كبيره|سعة|كم يقبلون|تنافس|الفرص|quota|capacity|numbers)/i.test(cleanText);
-    const isAskingStipendOrMoney = /(راتب|مكافأة|مكافاه|مصاريف|مالية|فلوس|تمويل|راتب شهري|stipend|allowance|salary|money)/i.test(cleanText);
-    const isAskingHousing = /(سكن|إقامة|اقامة|معيشة|سكن جامعي|غرفة|dorm|housing|accommodation)/i.test(cleanText);
-    const isAskingLanguage = /(لغة|لغه|شهادة لغة|آيلتس|توفل|توفل|انجليزي|ألماني|تركي|ielts|toefl|language|english)/i.test(cleanText);
-    const isAskingAge = /(عمر|سن|العمر|السن|حد العمر|age|age limit)/i.test(cleanText);
-    const isAskingDeadline = /(موعد|مواعيد|تاريخ|أخر موعد|اخر موعد|متى ينتهي|متى يفتح|deadline|dates)/i.test(cleanText);
-    const isAskingDocuments = /(مستند|مستندات|أوراق|اوراق|شهادة|توصية|توصيات|دوافع|نوايا|وثائق|documents|docs|passport)/i.test(cleanText);
-    const isAskingSudanCert = /(سودانية|السودانية|الشهادة السودانية|سوداني)/i.test(cleanText);
-
-    // -------------------------------------------------------------------
-    // SCENARIO 1: Intent Query about Capacity/Quota ("هل تقبل أعداد كبيرة؟")
-    // -------------------------------------------------------------------
-    if (isAskingNumbersOrQuota) {
-      if (countryObj) {
+    // Question: Is Saudi Arabia Scholarship Open? (هل منحة ادرس في السعودية مفتوحة؟)
+    if (cleanText.includes('سعوديه') || cleanText.includes('السعوديه') || cleanText.includes('ادرس في السعوديه')) {
+      if (cleanText.includes('مفتوحه') || cleanText.includes('مواعيد') || cleanText.includes('متى تفتح') || cleanText.includes('فتح')) {
         return {
           reply: chosenLang === 'ar'
-            ? `📊 **عن الأعداد والطاقة الاستيعابية في ${countryObj.name}:**\n\n` +
-              `${countryObj.quotas}\n\n` +
-              `💡 **كيف تضمن قبولك؟**\n` +
-              `رغم كثرة الأعداد، فإن تميز خطاب النوايا (SOP) واكتمل ملف المستندات المصدقة هو الفارق الأساسي بين المتقدمين.\n\n` +
-              `هل ترغب في معرفة شروط النسبة أو المستندات لهذه المنحة؟`
-            : `📊 **Acceptance Capacity for ${countryObj.name}:**\n\n${countryObj.quotas}`,
+            ? `🟢 **نعم، التقديم على منحة (أدرس في السعودية) مفتوح حالياً عبر المنصة الرسمية للطلاب الدوليين.**\n\n` +
+              `📌 **التفاصيل الأساسية:**\n` +
+              `• **طريقة التقديم:** إلكترونياً عبر منصة (أدرس في السعودية).\n` +
+              `• **النسب المطلوب:** 80% فأعلى للكليات النظرية وإدارة الأعمال، و85% - 90% للهندسة والعلوم الصحية.\n` +
+              `• **المميزات:** راتب شهري منتظم، سكن مؤثث مجاني، وتذاكر طيران سنوية.\n\n` +
+              `هل ترغب في أن يساعدك المستشار الأكاديمي في تقديم ملفك رسمياً؟`
+            : `🟢 **Yes, applications for the (Study in Saudi Arabia) scholarship platform are currently open.**\n\n` +
+              `Requires 80%+ for business/humanities, fully funded with monthly stipend, free housing, and annual flights.`,
           lowConfidence: false,
-          suggestions: ['ما هي الشروط والنسبة؟', 'تفاصيل السكن والراتب', 'تواصل مع المستشار 📲']
+          suggestions: ['المستندات المطلوبة للسعودية', 'نسبتي 80 في الشهادة السودانية', 'تواصل مع المستشار 📲']
         };
       }
-
-      return {
-        reply: chosenLang === 'ar'
-          ? `📊 **الأعداد والطاقة الاستيعابية للمنح الدراسية العالمية:**\n\n` +
-            `• 🇸🇦 **منح المملكة العربية السعودية (منصة أدرس في السعودية):** تعتبر من الأكثر إتاحة للأعداد؛ حيث تتيح عشرات الآلاف من المقاعد سنوياً بمختلف التخصصات.\n` +
-            `• 🇹🇷 **المنحة التركية الحكومية:** تقبل حوالي 5,000 طالب سنوياً من مختلف دول العالم.\n` +
-            `• 🇭🇺 **منحة الحكومة الهنغارية:** تقبل أكثر من 5,000 طالب سنوياً من الدول الشريكة.\n` +
-            `• 🇪🇬 **منصة إدرس في مصر:** طاقة استيعابية واسعة جداً للطلاب السودانيين والعرب.\n\n` +
-            `حدد لي الدولة أو نسبتك الأكاديمية لأخبرك بفرصة قبولك بالضبط!`
-          : `📊 **Global Scholarship Quotas:**\nSaudi Arabia and Egypt offer the highest annual quotas, followed by Turkey and Hungary.`,
-        lowConfidence: false,
-        suggestions: ['منح السعودية أدرس في السعودية', 'المنحة التركية', 'نسبتي 80 في الشهادة السودانية']
-      };
     }
 
-    // -------------------------------------------------------------------
-    // SCENARIO 2: Language Requirements Intent ("هل تتطلب شهادة لغة؟")
-    // -------------------------------------------------------------------
-    if (isAskingLanguage) {
-      if (countryObj) {
+    // Question: Is Turkey Scholarship Open? (هل المنحة التركية مفتوحة؟)
+    if (cleanText.includes('تركيا') || cleanText.includes('التركيه') || cleanText.includes('تركيه')) {
+      if (cleanText.includes('مفتوحه') || cleanText.includes('متى تفتح') || cleanText.includes('مواعيد')) {
         return {
           reply: chosenLang === 'ar'
-            ? `🗣️ **متطلبات اللغة في ${countryObj.name}:**\n\n` +
-              `${countryObj.language}\n\n` +
-              `📌 **ملاحظة عامة:** حتى إن لم تكن تملك شهادة IELTS أو TOEFL، فإن العديد من المنح توفر سنة لغة تحضيرية مجانية أو تقبل إثبات الدراسة باللغة الإنجليزية!`
-            : `🗣️ **Language Requirements for ${countryObj.name}:**\n\n${countryObj.language}`,
+            ? `ℹ️ **مواعيد التقديم على المنحة التركية (Türkiye Bursları):**\n\n` +
+              `تفتح المنحة التركية باب التقديم السنوي الموحد عادة في الفترة بين **10 يناير حتى 20 فبراير** من كل عام.\n\n` +
+              `📌 **الاستعداد المطلوب الآن:**\n` +
+              `• تجهيز الشهادات وكشوف الدرجات المصدقة.\n` +
+              `• كتابة خطاب النوايا (SOP) واختيار التوصيات.\n\n` +
+              `يمكن لمسؤول الموقع تجهيز كافة خطابات التوصية والنوايا الخاصة بك من الآن!`
+            : `ℹ️ Turkiye Burslari opens annually between January 10th and February 20th.`,
           lowConfidence: false,
-          suggestions: ['المستندات الأخرى المطلوبة', 'تفاصيل السكن والراتب', 'تواصل مع المستشار 📲']
+          suggestions: ['صياغة خطاب النوايا لتركيا', 'شروط التقديم لتركيا', 'تواصل مع المستشار 📲']
         };
       }
+    }
 
+    // Question: Does it accept large quotas/numbers? (هل تقبل أعداداً كبيرة؟)
+    if (cleanText.includes('اعداد') || cleanText.includes('كبيره') || cleanText.includes('سعه') || cleanText.includes('طاقه')) {
       return {
         reply: chosenLang === 'ar'
-          ? `🗣️ **هل جميع المنح تتطلب شهادة لغة (IELTS / TOEFL)؟**\n\n` +
-            `**الإجابة: لا! هناك منح عديدة لا تشترط شهادة لغة مسبقة:**\n\n` +
-            `1. 🇸🇦 **منح السعودية:** توفر برامج لغة عربية وإنجليزية دون اشتراط IELTS مسبقاً لأغلب البرامج.\n` +
-            `2. 🇹🇷 **المنحة التركية:** تمنح جميع المقبولين **سنة لغة تركية مجانية (TÖMER)** بغض النظر عن لغتك الحالية.\n` +
-            `3. 🇭🇺 **منحة هنغاريا:** تقبل خطابات إثبات اللغة الصادرة من مدرستك/جامعتك أو التقييم في المقابلة.\n` +
-            `4. 🇩🇪 **ألمانيا:** تشترط الإنجليزية للبرامج الدولية أو الألمانية للبرامج المعتمدة هناك.\n\n` +
-            `أخبرني بالدولة التي تهتم بها لأعطيك شرط اللغة الخاص بها!`
-          : `🗣️ **Do all scholarships require language certificates?**\nNo! Saudi Arabia and Turkey provide free 1-year language prep courses regardless of your current language level.`,
+          ? `🟢 **نعم، تقبل المنحة السعودية ومنصة إدرس في مصر والمنحة التركية أعداداً كبيرة جداً سنوياً.**\n\n` +
+            `• **المملكة العربية السعودية:** تتيح عشرات الآلاف من المقاعد للطلاب الدوليين من أكثر من 160 دولة.\n` +
+            `• **مصر:** طاقة استيعابية واسعة جداً بتسهيلات وحسومات خاصة للطلاب السودانيين والعرب.\n` +
+            `• **تركيا:** تمنح أكثر من 5,000 مقعد سنوياً.\n\n` +
+            `لكن الفارق الأساسي في القبول هو اكتمال الملف وجودة خطاب النوايا (SOP).`
+          : `🟢 **Yes, Saudi Arabia and Egypt offer very large annual quotas for international students.**`,
         lowConfidence: false,
-        suggestions: ['المنحة السعودية', 'المنحة التركية', 'تواصل مع المستشار 📲']
+        suggestions: ['التقديم على منحة السعودية', 'تواصل مع المستشار للتقديم 📲']
       };
     }
 
-    // -------------------------------------------------------------------
-    // SCENARIO 3: Housing & Stipend Intent ("تفاصيل السكن والمرتبات")
-    // -------------------------------------------------------------------
-    if (isAskingHousing || isAskingStipendOrMoney) {
-      if (countryObj) {
-        return {
-          reply: chosenLang === 'ar'
-            ? `🏠💰 **تفاصيل السكن والمكافأة المالية في ${countryObj.name}:**\n\n` +
-              `• **الراتب والمكافأة:** ${countryObj.stipend}\n` +
-              `• **السكن والإقامة:** ${countryObj.housing}\n` +
-              `${countryObj.tickets ? `• **تذاكر الطيران:** ${countryObj.tickets}\n` : ''}\n` +
-              `✨ المنحة تعتبر ممولة بالكامل وتغطي تكاليف الدراسة والمعيشة.`
-            : `🏠💰 **Housing & Stipend for ${countryObj.name}:**\n\nStipend: ${countryObj.stipend}\nHousing: ${countryObj.housing}`,
-          lowConfidence: false,
-          suggestions: ['شروط القبول والنسبة', 'المستندات المطلوبة', 'تواصل مع المستشار 📲']
-        };
-      }
-
+    // Question: Sudanese Certificate 80% Saudi evaluation (نسبتي 80 في الشهادة السودانية هل أقدم للسعودية؟)
+    if (cleanText.includes('سودانيه') || cleanText.includes('الشهاده السودانيه')) {
       return {
         reply: chosenLang === 'ar'
-          ? `🏠💰 **المميزات المالية والسكنية في المنح الممولة بالكامل:**\n\n` +
-            `تتضمن المنح الكاملة (مثل السعودية، تركيا، هنغاريا، والداد الألماني):\n` +
-            `1. **إعفاء كامل 100% من الرسوم الدراسية.**\n` +
-            `2. **راتب شهري منتظم** يدفع للطالب لإغفال مصاريفه الشخصية.\n` +
-            `3. **سكن جامعي مجاني مؤثث** بالكامل شامل الخدمات.\n` +
-            `4. **تأمين صحي شامل وتذاكر طيران سنوية.**\n\n` +
-            `ما هي المنحة التي تود معرفة تفاصيل مرتباتها وسكنها؟`
-          : `Fully funded scholarships cover 100% tuition, free university housing, monthly stipends, health insurance, and return flight tickets.`,
+          ? `🟢 **نعم، نسبة ${percentage || 80}% في الشهادة السودانية تمكنك من التقديم والمنافسة القوية على منحة (أدرس في السعودية)!**\n\n` +
+            `📌 **تفاصيل القبول لنسبتك:**\n` +
+            `• **الكليات النظرية والأدبية وإدارة الأعمال (80% فأعلى):** فرصة قبولك مرتفعة جداً.\n` +
+            `• **كليات الهندسة وتقنية المعلومات (85% فأعلى):** ${percentage >= 85 ? 'نسبتك تتيح لك التنافس المباشر!' : 'يفضل التقديم أيضاً على تخصصات الحاسوب ونظم المعلومات'}.\n` +
+            `• **المميزات:** راتب شهري، سكن مؤثث مجاني، وتذاكر طيران سنوية.\n\n` +
+            `هل تريد أن يراجع المستشار الأكاديمي أوراقك ويقدم لك؟`
+          : `🟢 **Yes, 80% in Sudanese Secondary Certificate makes you strongly eligible for Saudi scholarships!**`,
         lowConfidence: false,
-        suggestions: ['منح السعودية', 'منح تركيا', 'منح هنغاريا']
+        suggestions: ['المستندات المطلوبة للسعودية', 'تواصل مع المستشار للتقديم 📲']
       };
     }
 
-    // -------------------------------------------------------------------
-    // SCENARIO 4: Specific Certificate & Percentage (Sudanese Certificate 80%, etc.)
-    // -------------------------------------------------------------------
-    if (percentage || isAskingSudanCert) {
-      const scoreText = percentage ? `بنسبة **${percentage}%**` : '';
-      const certText = isAskingSudanCert ? 'في الشهادة السودانية' : 'في الثانوية العامة';
-
-      if (matchedCountryKey === 'saudi' || cleanText.includes('سعودية')) {
-        return {
-          reply: chosenLang === 'ar'
-            ? `🇸🇦 **فرص القبول في منح السعودية ${scoreText} ${certText}:**\n\n` +
-              `**نعم، فرصة قبولك ممتازة جداً!** 🌟\n\n` +
-              `• **الكليات النظرية، الإدارية، والتجارية (80% فأعلى):** تضمن لك منافسة قوية جداً في منصة (أدرس في السعودية).\n` +
-              `• **كليات الهندسة وتقنية المعلومات (85% فأعلى):** ${percentage >= 85 ? 'نسبتك تتيح لك التقديم المباشر على الهندسة والحاسوب!' : 'يفضل التقديم أيضاً على علوم الحاسوب ونظم المعلومات'}.\n` +
-              `• **المميزات:** راتب شهري، سكن مجاني، تذاكر طيران سنوياً، ورعاية صحية شاملة.\n\n` +
-              `هل ترغب في أن يتولى المستشار الأكاديمي تجهيز ملفك والتقديم لك رسمياً؟`
-            : `With ${percentage || 80}% in high school, you are highly eligible for fully funded Saudi Arabia scholarships!`,
-          lowConfidence: false,
-          suggestions: ['تواصل مع المستشار للتقديم 📲', 'المستندات المطلوبة للسعودية', 'المنحة التركية']
-        };
-      }
-
+    // Question: Language certificate required? (هل تتطلب شهادة لغة؟)
+    if (cleanText.includes('لغه') || cleanText.includes('ايلتس') || cleanText.includes('توفل') || cleanText.includes('انجليزي')) {
       return {
         reply: chosenLang === 'ar'
-          ? `🎓 **تقييم الأهلية والفرص ${scoreText} ${certText}:**\n\n` +
-            `نسبتك تفتح لك أبواب التقديم في عدة منح عالمية ممتازة:\n` +
-            `1. 🇸🇦 **منح المملكة العربية السعودية:** قبول قوي للنسب من 80% فما فوق لكليات التجارة والعلوم والنظرية.\n` +
-            `2. 🇹🇷 **المنحة التركية الحكومية:** تقبل من 70% للعلوم الإنسانية و75% للهندسة.\n` +
-            `3. 🇭🇺 **منحة هنغاريا الحكومية:** تقبل التقديم بنسبتك مع إثبات كفاءة لغوية.\n` +
-            `4. 🇪🇬 **منحة إدرس في مصر:** قبول مباشر بتسهيلات ورسوم مخفضة.\n\n` +
-            `راسل المستشار الأكاديمي لمراجعة ملفك وتحديد المنحة الأضمن لك!`
-          : `Your high school score qualifies you for Saudi Arabia, Turkey, Hungary, and Egypt scholarship programs.`,
+          ? `🔵 **لا، ليست كل المنح تتطلب شهادة لغة (IELTS/TOEFL) مسبقاً.**\n\n` +
+            `• **منح السعودية وتركيا:** لا تشترط شهادة لغة مسبقاً لغالبية التخصصات، وتوفر سنة تحضيرية مجانية للغة.\n` +
+            `• **منحة هنغاريا:** تقبل إثبات اللغة الصادر من المدرسة/الجامعة أو الاختبار الداخلي.\n` +
+            `• **منح ألمانيا وبريطانيا:** تشترط عادة IELTS 6.5+ للبرامج المعتمدة بالإنجليزية.`
+          : `🔵 **No, not all scholarships require language certificates.** Saudi Arabia and Turkey offer free 1-year language prep courses.`,
         lowConfidence: false,
-        suggestions: ['منحة السعودية', 'المنحة التركية', 'تواصل مع المستشار عبر واتساب 📲']
+        suggestions: ['منحة السعودية', 'المنحة التركية', 'تواصل مع المستشار 📲']
       };
     }
 
-    // -------------------------------------------------------------------
-    // SCENARIO 5: Country Specific Matches (General)
-    // -------------------------------------------------------------------
-    if (countryObj) {
+    // Question: Housing & Stipends (تفاصيل السكن والراتب)
+    if (cleanText.includes('سكن') || cleanText.includes('راتب') || cleanText.includes('مكافاه') || cleanText.includes('مصاريف')) {
       return {
         reply: chosenLang === 'ar'
-          ? `🌍 **دليل التقديم الشامل لـ ${countryObj.name}:**\n\n` +
-            `• **الأعداد والتنافس:** ${countryObj.quotas}\n` +
-            `• **النسب القبول:** ${countryObj.acceptance}\n` +
-            `• **متطلبات اللغة:** ${countryObj.language}\n` +
-            `• **المميزات والراتب:** ${countryObj.stipend}\n` +
-            `• **السكن الإقامة:** ${countryObj.housing}\n\n` +
-            `أخبرني إذا كنت تود استفساراً محدداً أو التواصل مع المستشار للتقديم!`
-          : `🌍 **Scholarship Guide for ${countryObj.name}:**\nRequirements: ${countryObj.acceptance}\nLanguage: ${countryObj.language}\nStipend & Housing included.`,
+          ? `🟢 **نعم، جميع المنح الحكومية الممولة بالكامل تغطي السكن والراتب الشهري 100%.**\n\n` +
+            `• **الراتب الشهري:** يدفع شهرياً للطالب لمصاريفه الشخصية.\n` +
+            `• **السكن:** سكن جامعي مؤثث مجاني شامل الكهرباء والإنترنت.\n` +
+            `• **التذاكر والعلاج:** تذاكر طيران سنوية ورعاية صحية شاملة مجاناً.`
+          : `🟢 **Yes, fully funded scholarships cover 100% tuition, free housing, and monthly stipends.**`,
         lowConfidence: false,
-        suggestions: ['هل تتطلب شهادة لغة؟', 'هل تقبل أعداداً كبيرة؟', 'تواصل مع المستشار 📲']
+        suggestions: ['منح السعودية', 'منح تركيا', 'تواصل مع المستشار 📲']
       };
     }
 
-    // -------------------------------------------------------------------
-    // SCENARIO 6: Documents FAQs
-    // -------------------------------------------------------------------
-    if (isAskingDocuments) {
+    // General Documents Question
+    if (cleanText.includes('مستند') || cleanText.includes('اوراق') || cleanText.includes('وثائق') || cleanText.includes('شهاده') || cleanText.includes('توصيه')) {
       return {
         reply: chosenLang === 'ar'
-          ? `📋 **المستندات الرسمية الشاملة للتقديم على المنح:**\n\n` +
-            `1. **الشهادة الثانوية/الجامعية وكشف الدرجات:** مترجمة ومصدقة من الخارجية والتعليم.\n` +
-            `2. **خطاب النوايا والدافع (SOP):** مخصص للتخصص والجامعة.\n` +
-            `3. **خطابات التوصية (Recommendation Letters):** 2 خطابات من أساتذة أو مشرفين.\n` +
-            `4. **السيرة الذاتية (CV):** بالصياغة الأكاديمية الأوروبية.\n` +
-            `5. **جواز سفر ساري المفعول وصورة شخصية.**\n\n` +
-            `💡 يمكنك استخدام **أداة المسؤول** في المنصة لصياغة وتجهيز كافة الخطابات الرسمية بلمسة زر!`
-          : `📋 **Required Documents:** Certified Certificates, Transcripts, SOP, 2 Recommendation Letters, CV, Passport.`,
+          ? `📋 **المستندات الأساسية المطلوبة للتقديم على المنح:**\n\n` +
+            `1. **الشهادة الأكاديمية وكشف الدرجات المصدّق.**\n` +
+            `2. **خطاب النوايا والدافع (SOP).**\n` +
+            `3. **خطابات توصية أكاديمية (2).**\n` +
+            `4. **السيرة الذاتية (CV) وجواز السفر.**\n\n` +
+            `💡 يمكن لمسؤول المنصة صياغة كافة خطابات النوايا والتوصيات لملفك من خلال لوحة المسؤول!`
+          : `📋 **Required Documents:** Transcripts, SOP, 2 Recommendation Letters, Academic CV, Passport.`,
         lowConfidence: false,
-        suggestions: ['صياغة خطاب النوايا', 'صياغة خطابات التوصية', 'تواصل مع المستشار 📲']
+        suggestions: ['صياغة خطاب النوايا', 'تواصل مع المستشار 📲']
       };
     }
 
-    // -------------------------------------------------------------------
-    // SCENARIO 7: Intelligent Flexible Fallback (Niche / Uncovered Questions)
-    // -------------------------------------------------------------------
+    // -------------------------------------------------------------
+    // RULE 3: PREVENT HALLUCINATIONS / OUT-OF-SCOPE REPHRASE REQUEST
+    // If query is completely outside domain or nonsensical
+    // -------------------------------------------------------------
+    const isDomainRelated = /(منح|منحه|دراسه|جامعه|قبول|سعوديه|تركيا|المانيا|مصر|هنغاريا|شروط|مستند|راتب|سكن|شهاده|معدل|نسبه|تخصص|ماجستير|بكالوريوس|دكتوراه|سودانيه|ايلتس|توفل|توصيه|نوايا|sop|scholarship|university|apply|gpa|admission)/i.test(cleanText);
+
+    if (!isDomainRelated) {
+      return {
+        reply: chosenLang === 'ar'
+          ? `عذراً، لم أفهم استفسارك بشكل واضح بخصوص المنح الدراسية. 🎓\n\n` +
+            `يرجى إعادة صياغة سؤالك حول **المنح الدراسية، شروط القبول، المستندات المطلوبة، أو نسب القبول** لأتمكن من إجابتك بدقة تامة!`
+          : `I am sorry, I didn't quite catch your scholarship-related question. 🎓\n\nPlease rephrase your query regarding scholarships, admissions, requirements, or documents so I can assist you accurately!`,
+        lowConfidence: false,
+        suggestions: chosenLang === 'ar'
+          ? ['هل منحة ادرس في السعودية مفتوحة؟', 'نسبتي 80 في الشهادة السودانية', 'المستندات المطلوبة للمنح', 'تواصل مع المستشار 📲']
+          : ['Is Saudi scholarship open?', 'High school evaluation', 'Required documents', 'Contact Advisor 📲']
+      };
+    }
+
+    // Domain related but custom / needs human advisor evaluation
     return {
       reply: chosenLang === 'ar'
-        ? `أهلاً بك! بالنسبة للاستفسار الخاص بـ: ("${rawText}") 🎓\n\n` +
-          `تتطلب الإجابة الدقيقة على هذا السؤال مراجعة حالة ملفك الأكاديمي والاشتراطات المحدثة للسنة الدراسية الحالية.\n\n` +
-          `💡 **قواعد عامة مفيدة:**\n` +
-          `• تشترط معظم المنح الحكومية وجود مستندات مصدقة وخطاب نوايا احترافي.\n` +
-          `• تتوفر فرص ممولة بالكامل تشمل السكن والراتب والتذاكر مجاناً.\n\n` +
-          `يمكنك التواصل المباشر مع **المستشار الأكاديمي لـ ScholarLoop** لتقييم ملفك وإجابتك بدقة تامة:`
-        : `Regarding your query ("${rawText}"): 🎓\n\n` +
-          `Requirements vary dynamically based on academic year and university rules.\n\n` +
-          `Please contact our **ScholarLoop Academic Advisor** directly on WhatsApp for tailored evaluation:`,
+        ? `حول استفسارك الأكاديمي المخصص: ("${rawText}") 🎓\n\n` +
+          `يتطلب هذا الاستفسار مراجعة حالة ملفك الأكاديمي المباشر من قبل المستشار الأكاديمي لضمان إجابة دقيقة 100%:\n\n` +
+          `يمكنك التواصل المباشر مع **المستشار الأكاديمي منصة ScholarLoop** عبر واتساب:`
+        : `Regarding your inquiry ("${rawText}"): 🎓\n\nPlease contact our **ScholarLoop Academic Advisor** directly on WhatsApp for tailored evaluation:`,
       lowConfidence: true,
       whatsappLink: this.advisorWhatsappLink,
       whatsappPhone: '+249 96 071 4750',
-      suggestions: chosenLang === 'ar'
-        ? ['تواصل مع المستشار عبر واتساب 📲', 'نسبتي 80 في الشهادة السودانية', 'هل تتطلب شهادة لغة؟']
-        : ['Contact WhatsApp 📲', 'Saudi Scholarships', 'Language Requirements']
+      suggestions: ['تواصل مع المستشار عبر واتساب 📲', 'هل منحة ادرس في السعودية مفتوحة؟', 'المستندات المطلوبة']
     };
   }
 }
