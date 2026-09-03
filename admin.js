@@ -6,12 +6,10 @@
 class ScholarLoopAdmin {
   constructor() {
     this.adminPasswordHash = 'admin123'; // Default secure password
-    this.isAuthenticated = false;
   }
 
   authenticate(password) {
-    if (password.trim() === this.adminPasswordHash) {
-      this.isAuthenticated = true;
+    if (password && password.trim() === this.adminPasswordHash) {
       sessionStorage.setItem('sl_admin_authenticated', 'true');
       return true;
     }
@@ -23,14 +21,13 @@ class ScholarLoopAdmin {
   }
 
   logout() {
-    this.isAuthenticated = false;
     sessionStorage.removeItem('sl_admin_authenticated');
   }
 
   /**
    * Generate Academic Letters (SOP, Recommendation, Cover Letter, Gap Year, Study Plan)
    */
-  async generateLetter(params) {
+  async generateLetter(params, instant = false) {
     const { 
       letterType, 
       studentName, 
@@ -44,35 +41,38 @@ class ScholarLoopAdmin {
       language 
     } = params;
 
-    // Simulate AI generator delay
-    await new Promise(r => setTimeout(r, 1000));
+    // Optional delay when clicking generate button manually
+    if (!instant) {
+      await new Promise(r => setTimeout(r, 400));
+    }
 
-    const sName = studentName || 'الطالب المحترم';
-    const target = targetUniversity || 'الجامعة والمنحة المستهدفة';
-    const deg = degreeLevel || 'البكالوريوس / الماجستير';
-    const maj = major || 'التخصص الأكاديمي';
-    const recTitle = recommenderTitle || 'الأستاذ الدكتور / المشرف الأكاديمي';
+    const sName = (studentName && studentName.trim()) ? studentName.trim() : '[اسم الطالب/ـة]';
+    const target = (targetUniversity && targetUniversity.trim()) ? targetUniversity.trim() : '[الجامعة / المنحة والدولة المستهدفة]';
+    const deg = (degreeLevel && degreeLevel.trim()) ? degreeLevel.trim() : 'البكالوريوس / الماجستير';
+    const maj = (major && major.trim()) ? major.trim() : '[التخصص الأكاديمي]';
+    const recTitle = (recommenderTitle && recommenderTitle.trim()) ? recommenderTitle.trim() : 'الأستاذ الدكتور / المشرف الأكاديمي';
+    const isEnglish = language === 'en';
 
-    // 1. STATEMENT OF PURPOSE / MOTIVATION LETTER
+    // 1. STATEMENT OF PURPOSE / MOTIVATION LETTER (SOP)
     if (letterType === 'sop') {
-      if (language === 'en') {
+      if (isEnglish) {
         return `STATEMENT OF PURPOSE (SOP)
 
 Applicant Name: ${sName}
 Degree Program: ${deg} in ${maj}
 Target Institution / Scholarship: ${target}
 
-Dear Members of the Admissions Committee,
+Dear Members of the Admissions & Scholarship Selection Committee,
 
-I am writing this Statement of Purpose to formally convey my deep academic motivation and enthusiasm to apply for the ${deg} program in ${maj} at ${target}. Throughout my educational background, I have consistently maintained a high standard of academic commitment, driven by a passion for technical excellence and continuous innovation.
+I am writing this Statement of Purpose to formally convey my strong academic motivation and enthusiasm to apply for the ${deg} program in ${maj} at ${target}. Throughout my educational journey, I have maintained a high standard of academic commitment, driven by a deep passion for research excellence, innovation, and practical problem-solving.
 
-${accomplishments ? `My previous academic and practical achievements include: ${accomplishments}.` : 'During my foundational studies, I completed rigorous coursework, hands-on projects, and research activities that solidified my analytical mindset and problem-solving skills.'} These experiences provided me with a comprehensive understanding of core domain principles and prepared me to tackle advanced academic challenges.
+${accomplishments ? `My key academic and practical accomplishments include: ${accomplishments}.` : 'During my foundational studies, I completed rigorous academic coursework, hands-on projects, and research activities that solidified my analytical mindset and domain knowledge.'} These experiences have equipped me with a strong theoretical base and practical skills necessary to excel in advanced academic studies.
 
-My strong motivation for choosing ${target} stems from ${reason || 'its distinguished reputation for academic leadership, cutting-edge research facilities, and world-class faculty members'}. The curriculum aligns seamlessly with my specialized interests, offering an ideal environment to acquire state-of-the-art knowledge and collaborate with international scholars.
+My decision to apply to ${target} stems from ${reason || 'its distinguished reputation for academic leadership, world-class faculty, and innovative research ecosystem'}. The structured curriculum and research environment offered by your institution align perfectly with my aspirations to gain specialized knowledge and contribute to impactful research.
 
-Upon graduating from this esteemed program, my immediate and long-term career goals involve ${futurePlans || 'utilizing the expertise gained to solve complex real-world challenges, lead strategic research projects, and contribute meaningfully to my field and community'}.
+Upon completing this program, my immediate and long-term goals involve ${futurePlans || 'applying the expertise and skills acquired to solve complex real-world challenges, lead innovative projects, and contribute meaningfully to my field'}.
 
-I am confident that my background, dedication, and enthusiasm make me a suitable candidate for this competitive program. Thank you for your time and consideration of my application.
+I am confident that my academic background, dedication, and enthusiasm make me a strong candidate for this competitive program. Thank you for considering my application.
 
 Sincerely,
 ${sName}`;
@@ -86,9 +86,9 @@ ${sName}`;
 
 إلى أعضاء لجنة القبول وتدقيق المنح المحترمين،
 
-أكتب إليكم هذه الرسالة للتعبير عن رغبتي الأكاديمية الشديدة وشغفي للانضمام إلى برنامج ${deg} في تخصص (${maj}) لدى ${target}. لقد كان طموحي الدائم التميز العلمي والوصول إلى أرقى درجات المعرفة البحثية والتطبيقية في هذا المجال.
+أكتب إليكم هذه الرسالة للتعبير عن رغبتي الأكاديمية الشديدة وشغفي الكبير للانضمام إلى برنامج ${deg} في تخصص (${maj}) لدى ${target}. لقد كان طموحي الدائم التميز العلمي والوصول إلى أعلى درجات المعرفة البحثية والتطبيقية في هذا التخصص الواعد.
 
-${accomplishments ? `خلال مسيرتي الأكاديمية والعملية، حققت عدة إنجازات بارزة، من أهمها: ${accomplishments}.` : 'خلال دراستي السابقة، حرصت على تحقيق التفوق والعمل الجاد، والمشاركة الفاعلة في الأنشطة الأكاديمية والمشاريع التي صقلت قدراتي التحليلية والتنفيذية.'} لقد أسهمت هذه التجارب في بناء قاعدة علمية متينة جعلتني جاهزاً لخوض تحديات الدراسات العليا بتمكّن وثقة.
+${accomplishments ? `خلال مسيرتي الأكاديمية والعملية، حققت عدة إنجازات بارزة، من أهمها: ${accomplishments}.` : 'خلال دراستي السابقة، حرصت على تحقيق التفوق والعمل الجاد، والمشاركة الفاعلة في الأنشطة الأكاديمية والمشاريع التي صقلت قدراتي التحليلية والتنفيذية.'} لقد أسهمت هذه التجارب في بناء قاعدة علمية متينة جعلتني جاهزاً تماماً لخوض تحديات الدراسات العليا بتمكّن وثقة.
 
 إن اختيارِي لـ (${target}) يعود إلى: ${reason || 'السمعة الأكاديمية المرموقة، وتوفر البيئة التعليمية المتطورة، والفرص البحثية المتقدمة التي تجمع بين الجانب النظري والتطبيقي بشكل فريد'}. أثق تماماً أن هذا البرنامج يمثل البيئة الأنسب لتحقيق تطلعاتي وتطوير مهاراتي.
 
@@ -102,19 +102,19 @@ ${sName}`;
 
     // 2. ACADEMIC RECOMMENDATION LETTER (خطاب توصية أكاديمي)
     if (letterType === 'recommendation_academic') {
-      if (language === 'en') {
+      if (isEnglish) {
         return `ACADEMIC RECOMMENDATION LETTER
 
 To the Admissions & Selection Committee,
-Target Institution: ${target}
+Target Institution / Scholarship: ${target}
 
-It is my distinct pleasure to write this letter of recommendation for ${sName}, who is applying for the ${deg} program in ${maj}. As ${recTitle}, I have known the applicant for several years and observed their academic performance, intellectual curiosity, and exceptional work ethic.
+It is my distinct pleasure to write this letter of recommendation for ${sName}, who is applying for the ${deg} program in ${maj} at ${target}. As ${recTitle}, I have known the candidate throughout their academic trajectory and observed their outstanding intellectual capacity, academic commitment, and integrity.
 
-During our academic interaction, ${sName} demonstrated outstanding comprehension of complex subject matter. ${accomplishments ? `Specifically, the student distinguished themselves by: ${accomplishments}.` : 'The applicant consistently performed in the top tier of their cohort, displaying exceptional analytical capabilities and research dedication.'}
+During our academic interaction, ${sName} demonstrated exceptional comprehension of advanced domain concepts. ${accomplishments ? `Specifically, the student distinguished themselves through: ${accomplishments}.` : 'The applicant consistently ranked among the top performers in their class, displaying remarkable analytical thinking and dedication to academic quality.'}
 
-Beyond academic excellence, ${sName} possesses exemplary personal attributes—showing remarkable maturity, teamwork, and leadership. Based on their strong foundation, I am confident they will thrive in ${target} and make valuable academic contributions.
+In addition to academic brilliance, ${sName} possesses outstanding personal qualities, including strong communication skills, initiative, and team collaboration. I am fully confident that they will thrive at ${target} and make significant contributions to your academic community.
 
-Therefore, I give my highest recommendation to ${sName} without reservation. Please feel free to contact me if further information is required.
+I give my highest recommendation to ${sName} without reservation. Please feel free to contact me for any further details.
 
 Sincerely,
 ${recTitle}`;
@@ -139,13 +139,30 @@ ${recTitle}`;
 
     // 3. PROFESSIONAL RECOMMENDATION LETTER (خطاب توصية مهني)
     if (letterType === 'recommendation_professional') {
+      if (isEnglish) {
+        return `PROFESSIONAL RECOMMENDATION LETTER
+
+To the Scholarship Selection Committee,
+Target Institution: ${target}
+
+As ${recTitle}, I am pleased to write this professional letter of recommendation in support of ${sName} for the ${deg} program in ${maj}.
+
+Having supervised ${sName}, I have been consistently impressed by their professional ethics, technical efficiency, and reliability. ${accomplishments ? `Among their key professional achievements: ${accomplishments}.` : 'They demonstrated excellent leadership, problem-solving skills, and the ability to work under high pressure.'}
+
+I strongly endorse ${sName} for this scholarship program at ${target}, confident that this milestone will further elevate their career capabilities.
+
+Best Regards,
+${recTitle}`;
+      }
+
       return `خطاب توصية مهني (Professional Recommendation Letter)
 
 إلى جهة التقييم والقبول المحترمة،
+الجهة المستهدفة: ${target}
 
 بصفتي (${recTitle})، أكتب هذه التوصية المهنية لدعم طلب التقديم المقدم من (${sName}) للانضمام إلى برنامج ${deg} في (${maj}) لدى ${target}.
 
-خلال فترة عمله/ـا تحت إشرافي، أظهر الطالب/ـة التزاماً مهنياً استثنائياً وقدرة عالية على تحمل المسؤولية وانجاز المهام الموكلة إليه بكل إتقان. ${accomplishments ? `ومن أبرز إنجازاته المهنية: ${accomplishments}.` : 'وقد تميز بالمهارة الفنية وحسن إدارة الوقت والعمل الجماعي بانسجام تام.'}
+خلال فترة عمله/ـا تحت إشرافي، أظهر الطالب/ـة التزاماً مهنياً استثنائياً وقدرة عالية على تحمل المسؤولية وإنجاز المهام الموكلة إليه بكل إتقان. ${accomplishments ? `ومن أبرز إنجازاته المهنية: ${accomplishments}.` : 'وقد تميز بالمهارة الفنية وحسن إدارة الوقت والعمل الجماعي بانسجام تام.'}
 
 أثبت (${sName}) قدرته على الابتكار والتطوير المستمر، وأنا على يقين أن هذه المنحة والفرصة الأكاديمية ستكون المحرك الأساسي لصقل مهاراته القيادية.
 
@@ -157,6 +174,24 @@ ${recTitle}`;
 
     // 4. COVER LETTER FOR SCHOLARSHIP (خطاب تغطية للتقديم)
     if (letterType === 'cover_letter') {
+      if (isEnglish) {
+        return `SCHOLARSHIP COVER LETTER
+
+Subject: Application for ${deg} Scholarship in ${maj}
+To: Admissions & Financial Aid Office, ${target}
+
+Dear Committee Members,
+
+I am submitting my application packet for the ${deg} scholarship in ${maj} at ${target}.
+
+I have enclosed all required documentation, including certified academic transcripts, certificates, recommendations, and personal statement. ${accomplishments ? `My file highlights notable achievements such as: ${accomplishments}.` : ''}
+
+Thank you for reviewing my application. I look forward to the opportunity to contribute to your university.
+
+Sincerely,
+${sName}`;
+      }
+
       return `خطاب التغطية للتقديم على المنحة الدراسية (Scholarship Cover Letter)
 
 الموضوع: طلب التقديم على منحة ${deg} في تخصص ${maj}
@@ -175,6 +210,24 @@ ${recTitle}`;
 
     // 5. GAP YEAR / EXPLANATION LETTER (خطاب تفسير الظروف أو الفجوة الزمنية)
     if (letterType === 'explanation_gap') {
+      if (isEnglish) {
+        return `EXPLANATION LETTER / GAP YEAR STATEMENT
+
+To the Admissions Committee,
+Target Institution: ${target}
+
+Subject: Explanation of Academic Pathway for ${sName}
+
+I am writing to provide transparent context regarding the gap period in my academic timeline.
+
+During this period, ${reason || 'I navigated exceptional circumstances while actively focusing on self-development'} and engaged in productive activities including: ${accomplishments || 'online courses, practical projects, and skills enhancement'}.
+
+I assure the committee of my unwavering academic focus and readiness to pursue ${deg} in ${maj} at ${target}.
+
+Sincerely,
+${sName}`;
+      }
+
       return `خطاب تفسير الفجوة الزمنية / الظروف (Explanation Letter)
 
 إلى لجنة القبول المحترمة،
@@ -193,6 +246,21 @@ ${sName}`;
     }
 
     // 6. STUDY PLAN & RESEARCH PROPOSAL (خطة الدراسة والبحث)
+    if (isEnglish) {
+      return `STUDY PLAN & RESEARCH GOALS
+
+Applicant: ${sName} | Major: ${maj} | Institution: ${target}
+
+1. Academic Goals & Focus:
+My goal in pursuing ${deg} in ${maj} is to acquire advanced technical expertise and engage in practical research.
+
+2. Study Schedule & Milestones:
+During the initial terms, I will focus on mastering core subjects, followed by dedicated thesis/project work addressing real-world problems.
+
+3. Expected Impact & Future Plans:
+${futurePlans || 'Upon completion, I aim to apply this knowledge to foster innovation and contribute to development in my field.'}`;
+    }
+
     return `خطة الدراسة والاهتمامات البحثية (Study Plan & Research Goals)
 
 اسم الطالب: ${sName} | التخصص: ${maj} | التقديم لـ: ${target}
@@ -209,3 +277,4 @@ ${futurePlans || 'تهدف هذه الدراسة إلى تزويدي بالخب�
 }
 
 const adminApp = new ScholarLoopAdmin();
+

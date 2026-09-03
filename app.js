@@ -34,6 +34,56 @@ class ScholarLoopApp {
 
     // Load active or new session
     await this.initChatSession();
+
+    // Attach live listeners for Academic Letters Generator
+    this.setupLiveLetterGenerator();
+  }
+
+  setupLiveLetterGenerator() {
+    const fields = [
+      'sopLetterType',
+      'sopStudentName',
+      'sopMajor',
+      'sopTargetUniversity',
+      'sopDegreeLevel',
+      'sopRecommenderTitle',
+      'sopAccomplishments',
+      'sopReason',
+      'sopFuturePlans',
+      'sopLanguage'
+    ];
+
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', () => this.triggerAutoGenerateSOP(true));
+        el.addEventListener('change', () => this.triggerAutoGenerateSOP(true));
+      }
+    });
+  }
+
+  async triggerAutoGenerateSOP(instant = true) {
+    const letterTypeEl = document.getElementById('sopLetterType');
+    if (!letterTypeEl) return;
+
+    const params = {
+      letterType: letterTypeEl.value,
+      studentName: document.getElementById('sopStudentName')?.value || '',
+      major: document.getElementById('sopMajor')?.value || '',
+      targetUniversity: document.getElementById('sopTargetUniversity')?.value || '',
+      degreeLevel: document.getElementById('sopDegreeLevel')?.value || '',
+      recommenderTitle: document.getElementById('sopRecommenderTitle')?.value || '',
+      accomplishments: document.getElementById('sopAccomplishments')?.value || '',
+      reason: document.getElementById('sopReason')?.value || '',
+      futurePlans: document.getElementById('sopFuturePlans')?.value || '',
+      language: document.getElementById('sopLanguage')?.value || 'ar'
+    };
+
+    const text = await adminApp.generateLetter(params, instant);
+    const textarea = document.getElementById('sopOutputTextarea');
+    if (textarea) {
+      textarea.value = text;
+    }
   }
 
   async initChatSession() {
@@ -252,9 +302,12 @@ class ScholarLoopApp {
       document.getElementById('adminLoginView').style.display = 'none';
       document.getElementById('adminAuthView').style.display = 'flex';
       this.loadAdminStudentsTable();
+      this.triggerAutoGenerateSOP(true);
     } else {
       document.getElementById('adminLoginView').style.display = 'block';
       document.getElementById('adminAuthView').style.display = 'none';
+      const pwdInput = document.getElementById('adminPasswordInput');
+      if (pwdInput) pwdInput.focus();
     }
   }
 
@@ -263,12 +316,15 @@ class ScholarLoopApp {
   }
 
   handleAdminLogin(e) {
-    e.preventDefault();
-    const pwd = document.getElementById('adminPasswordInput').value;
+    if (e) e.preventDefault();
+    const pwdInput = document.getElementById('adminPasswordInput');
+    const pwd = pwdInput ? pwdInput.value : '';
     if (adminApp.authenticate(pwd)) {
+      if (pwdInput) pwdInput.value = '';
       document.getElementById('adminLoginView').style.display = 'none';
       document.getElementById('adminAuthView').style.display = 'flex';
       this.loadAdminStudentsTable();
+      this.triggerAutoGenerateSOP(true);
     } else {
       alert('كلمة المرور غير صحيحة! كلمة المرور الافتراضية هي: admin123');
     }
@@ -283,6 +339,7 @@ class ScholarLoopApp {
     if (tab === 'sop') {
       document.getElementById('tabSopGenerator').style.display = 'block';
       document.getElementById('tabStudents').style.display = 'none';
+      this.triggerAutoGenerateSOP(true);
     } else {
       document.getElementById('tabSopGenerator').style.display = 'none';
       document.getElementById('tabStudents').style.display = 'block';
@@ -291,42 +348,53 @@ class ScholarLoopApp {
   }
 
   async handleGenerateSOP(e) {
-    e.preventDefault();
+    if (e) e.preventDefault();
     const btn = document.getElementById('btnGenerateSOP');
     btn.innerHTML = '⏳ جاري صياغة مسودة الخطاب بالذكاء الاصطناعي...';
     btn.disabled = true;
 
-    const params = {
-      letterType: document.getElementById('sopLetterType').value,
-      studentName: document.getElementById('sopStudentName').value,
-      major: document.getElementById('sopMajor').value,
-      targetUniversity: document.getElementById('sopTargetUniversity').value,
-      degreeLevel: document.getElementById('sopDegreeLevel').value,
-      recommenderTitle: document.getElementById('sopRecommenderTitle').value,
-      accomplishments: document.getElementById('sopAccomplishments').value,
-      reason: document.getElementById('sopReason').value,
-      futurePlans: document.getElementById('sopFuturePlans').value,
-      language: document.getElementById('sopLanguage').value
-    };
-
-    const text = await adminApp.generateLetter(params);
-    document.getElementById('sopOutputTextarea').value = text;
+    await this.triggerAutoGenerateSOP(false);
 
     btn.innerHTML = '✨ إنشاء مسودة الخطاب بالذكاء الاصطناعي';
     btn.disabled = false;
 
     // On mobile, smooth scroll to result text area
     if (window.innerWidth <= 768) {
-      document.getElementById('sopOutputTextarea').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('sopOutputTextarea')?.scrollIntoView({ behavior: 'smooth' });
     }
   }
 
-  copySOPText() {
+  async copySOPText() {
     const area = document.getElementById('sopOutputTextarea');
-    if (!area.value) return alert('لا توجد مسودة لنسخها بعد!');
-    area.select();
-    document.execCommand('copy');
-    alert('تم نسخ الخطاب بنجاح للحافظة!');
+    if (!area || !area.value.trim()) return alert('لا توجد مسودة لنسخها بعد!');
+    
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(area.value);
+      } else {
+        area.select();
+        document.execCommand('copy');
+      }
+      
+      const copyBtn = document.getElementById('btnCopySOP');
+      if (copyBtn) {
+        const origText = copyBtn.innerHTML;
+        copyBtn.innerHTML = '✅ تم نسخ النص!';
+        copyBtn.style.borderColor = '#10B981';
+        copyBtn.style.color = '#10B981';
+        setTimeout(() => {
+          copyBtn.innerHTML = origText;
+          copyBtn.style.borderColor = '';
+          copyBtn.style.color = '';
+        }, 2200);
+      } else {
+        alert('تم نسخ الخطاب بنجاح للحافظة! 📋');
+      }
+    } catch (err) {
+      area.select();
+      document.execCommand('copy');
+      alert('تم نسخ الخطاب بنجاح للحافظة! 📋');
+    }
   }
 
   async saveSOPToDB() {

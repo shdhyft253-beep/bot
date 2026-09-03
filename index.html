@@ -32,6 +32,7 @@
 
     <div class="nav-actions">
       <button class="btn-outline-gold btn-sm" onclick="app.openStudentModal()">🔑 حسابي</button>
+      <button class="btn-outline-gold btn-sm" onclick="app.openAdminModal()" title="أداة خاصة بمسؤول المنصة فقط">🔒 صانع الخطابات</button>
       <button class="btn-gold btn-sm" onclick="app.toggleChat()">
         <span>💬</span> اسأل المساعد
       </button>
@@ -108,10 +109,10 @@
         <p class="service-desc">تقييم كامل للأعداد المتاحة، شروط الأهلية والنسب والشهادات مثل الشهادة السودانية والثانوية العامة.</p>
       </div>
 
-      <div class="service-card">
+      <div class="service-card" onclick="app.openAdminModal()" style="cursor: pointer;">
         <div class="service-icon">📜</div>
-        <h3 class="service-title">صياغة كافة الخطابات الأكاديمية</h3>
-        <p class="service-desc">بإشراف المستشار الأكاديمي، نعد مسودة احترافية لخطابات النوايا (SOP)، التوصية، وCover Letter تعكس إنجازاتك وطموحك.</p>
+        <h3 class="service-title">صياغة كافة الخطابات الأكاديمية <span style="font-size: 0.72rem; background: rgba(212,175,55,0.2); color: var(--gold-bright); padding: 2px 8px; border-radius: 12px; margin-right: 6px; border: 1px solid var(--gold-border);">🔒 خاص بالمسؤول</span></h3>
+        <p class="service-desc">أداة محمية وخاصة بمسؤول الموقع لصياغة وتجهيز كافة خطابات النوايا (SOP)، التوصية الأكاديمية والمهنية، وCover Letter تلقائياً لجميع الطلاب.</p>
       </div>
     </div>
   </section>
@@ -240,7 +241,7 @@
       </div>
       <div>
         <button onclick="app.openAdminModal()" class="btn-outline-gold" style="padding: 0.4rem 1rem; font-size: 0.85rem;">
-          🛡️ دخول المسؤول (Admin)
+          🔒 دخول المسؤول — صانع الخطابات
         </button>
       </div>
     </div>
@@ -304,19 +305,20 @@
       
       <!-- Login View -->
       <div id="adminLoginView" style="padding: 2.5rem 1.5rem; text-align: center; max-width: 450px; margin: 0 auto;">
-        <div class="logo-badge" style="margin: 0 auto 1.5rem; width: 64px; height: 64px; font-size: 2rem;">🛡️</div>
-        <h2 class="section-title" style="font-size: 1.8rem;">لوحة التحكم الإدارية</h2>
-        <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem;">مخصصة فقط لمسؤول الموقع لصياغة الخطابات الأكاديمية (SOP، التوصية، Cover Letter) وإدارة الطلاب.</p>
+        <div class="logo-badge" style="margin: 0 auto 1.5rem; width: 64px; height: 64px; font-size: 2rem;">🔒</div>
+        <h2 class="section-title" style="font-size: 1.8rem;">لوحة صانع الخطابات الأكاديمية</h2>
+        <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem;">هذه الأداة محمية وخاصة بالمسؤول فقط. أدخل كلمة مرور المسؤول لفتح صانع الخطابات الأكاديمية (SOP، التوصية، Cover Letter).</p>
 
         <form onsubmit="app.handleAdminLogin(event)">
-          <div class="form-group">
-            <input type="password" id="adminPasswordInput" class="form-control" placeholder="أدخل كلمة المرور (الافتراضية: admin123)" required>
+          <div class="form-group" style="text-align: right;">
+            <label class="form-label" for="adminPasswordInput">كلمة مرور المسؤول (Admin Password):</label>
+            <input type="password" id="adminPasswordInput" class="form-control" placeholder="admin123" autocomplete="current-password" required>
           </div>
-          <button type="submit" class="btn-gold" style="width: 100%; justify-content: center; padding: 0.8rem;">
-            تسجيل الدخول
+          <button type="submit" class="btn-gold" style="width: 100%; justify-content: center; padding: 0.8rem; font-size: 1.05rem;">
+            🔑 تسجيل الدخول للوحة المسؤول
           </button>
         </form>
-        <button class="btn-outline-gold" style="margin-top: 1.5rem; width: 100%;" onclick="app.closeAdminModal()">إلغاء</button>
+        <button class="btn-outline-gold" style="margin-top: 1.2rem; width: 100%;" onclick="app.closeAdminModal()">إلغاء</button>
       </div>
 
       <!-- Authenticated View -->
@@ -422,7 +424,7 @@
               <div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
                   <h4 style="color: var(--gold-bright); font-size: 1.05rem;">📄 المسودة المولّدة (جاهزة للمراجعة والتعديل):</h4>
-                  <button class="btn-outline-gold btn-sm" onclick="app.copySOPText()">📋 نسخ النص</button>
+                  <button class="btn-outline-gold btn-sm" id="btnCopySOP" onclick="app.copySOPText()">📋 نسخ النص</button>
                 </div>
 
                 <textarea id="sopOutputTextarea" class="form-control" style="min-height: 480px; font-size: 0.95rem; line-height: 1.8;" placeholder="ستظهر المسودة المولّدة هنا تلقائياً بناءً على اختيارك، ويمكنك مراجعتها وتعديل أي فقرة قبل إرسالها للطالب..."></textarea>
