@@ -49,6 +49,7 @@ html {
   background-color: var(--bg-dark);
   color: var(--text-main);
   direction: rtl;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -146,6 +147,12 @@ h1, h2, h3, .serif-heading {
   color: var(--gold-bright);
 }
 
+.nav-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
 .btn-gold {
   background: var(--gold-gradient);
   color: var(--bg-dark);
@@ -177,6 +184,11 @@ h1, h2, h3, .serif-heading {
 
 .btn-outline-gold:hover {
   background: rgba(212, 175, 55, 0.12);
+}
+
+.btn-sm {
+  padding: 0.45rem 1rem !important;
+  font-size: 0.85rem !important;
 }
 
 /* Hero Section */
@@ -220,9 +232,10 @@ h1, h2, h3, .serif-heading {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
-/* Inline Interactive Chat Preview Card (Matching Screenshot #2) */
+/* Inline Interactive Chat Preview Card */
 .hero-chat-preview {
   background: var(--bg-card);
   border: 1px solid var(--gold-border);
@@ -250,6 +263,7 @@ h1, h2, h3, .serif-heading {
   align-items: center;
   justify-content: center;
   font-size: 1.1rem;
+  flex-shrink: 0;
 }
 
 .preview-body {
@@ -262,7 +276,7 @@ h1, h2, h3, .serif-heading {
 }
 
 .chat-bubble {
-  max-width: 85%;
+  max-width: 88%;
   padding: 0.9rem 1.1rem;
   border-radius: var(--radius-md);
   font-size: 0.95rem;
@@ -323,7 +337,7 @@ h1, h2, h3, .serif-heading {
 
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
 }
 
@@ -380,7 +394,6 @@ h1, h2, h3, .serif-heading {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-
   margin-top: 1.5rem;
 }
 
@@ -469,7 +482,7 @@ h1, h2, h3, .serif-heading {
   margin: 1rem 0 1.5rem;
 }
 
-/* Floating Action Buttons (CRITICAL REQUIREMENT) */
+/* FLOATING ACTION BUTTONS */
 
 /* Bottom Left: Robot Floating Button */
 .floating-robot-btn {
@@ -549,7 +562,7 @@ h1, h2, h3, .serif-heading {
   z-index: 1000;
   width: 420px;
   height: 620px;
-  max-width: calc(100vw - 40px);
+  max-width: calc(100vw - 30px);
   max-height: calc(100vh - 120px);
   background: var(--bg-card);
   border: 1px solid var(--gold-border);
@@ -619,20 +632,22 @@ h1, h2, h3, .serif-heading {
   display: flex;
   gap: 0.5rem;
   overflow-x: auto;
-  padding: 0.5rem 1.2rem;
-  background: rgba(0, 0, 0, 0.15);
+  padding: 0.6rem 1rem;
+  background: rgba(0, 0, 0, 0.2);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
+  -webkit-overflow-scrolling: touch;
 }
 
 .suggestion-chip {
   white-space: nowrap;
-  background: rgba(212, 175, 55, 0.1);
+  background: rgba(212, 175, 55, 0.12);
   border: 1px solid var(--gold-border);
   color: var(--gold-light);
   font-size: 0.82rem;
   padding: 0.4rem 0.85rem;
   border-radius: var(--radius-full);
   transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .suggestion-chip:hover {
@@ -674,6 +689,7 @@ h1, h2, h3, .serif-heading {
   align-items: center;
   justify-content: center;
   font-size: 1.1rem;
+  flex-shrink: 0;
 }
 
 /* Low confidence whatsapp card inside chat */
@@ -727,12 +743,12 @@ h1, h2, h3, .serif-heading {
   position: fixed;
   inset: 0;
   z-index: 2000;
-  background: rgba(5, 9, 20, 0.85);
+  background: rgba(5, 9, 20, 0.88);
   backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
+  padding: 1rem;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
@@ -747,9 +763,9 @@ h1, h2, h3, .serif-heading {
   background: var(--bg-card);
   border: 1px solid var(--gold-primary);
   border-radius: var(--radius-lg);
-  width: 1000px;
+  width: 1050px;
   max-width: 100%;
-  max-height: 90vh;
+  max-height: 92vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -763,6 +779,8 @@ h1, h2, h3, .serif-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 .admin-body {
@@ -771,8 +789,14 @@ h1, h2, h3, .serif-heading {
   flex: 1;
 }
 
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
 .form-group {
-  margin-bottom: 1.4rem;
+  margin-bottom: 1.2rem;
 }
 
 .form-label {
@@ -780,6 +804,7 @@ h1, h2, h3, .serif-heading {
   font-weight: 600;
   margin-bottom: 0.4rem;
   color: var(--gold-light);
+  font-size: 0.92rem;
 }
 
 .form-control {
@@ -787,7 +812,7 @@ h1, h2, h3, .serif-heading {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(212, 175, 55, 0.3);
   border-radius: var(--radius-md);
-  padding: 0.8rem 1rem;
+  padding: 0.75rem 1rem;
   color: white;
   font-family: inherit;
   font-size: 0.95rem;
@@ -800,29 +825,17 @@ h1, h2, h3, .serif-heading {
 }
 
 textarea.form-control {
-  min-height: 110px;
+  min-height: 90px;
   resize: vertical;
 }
 
-.sop-result-box {
-  background: #080D1F;
-  border: 1px solid var(--gold-border);
-  border-radius: var(--radius-md);
-  padding: 1.5rem;
-  white-space: pre-wrap;
-  font-family: inherit;
-  line-height: 1.8;
-  color: #E2E8F0;
-  min-height: 250px;
-  margin-top: 1rem;
-}
-
-/* Mobile Responsiveness */
+/* MOBILE RESPONSIVENESS OVERHAUL */
 @media (max-width: 992px) {
   .hero-section {
     grid-template-columns: 1fr;
     text-align: center;
-    padding-top: 2rem;
+    padding: 2.5rem 1.2rem;
+    gap: 2rem;
   }
   .hero-actions {
     justify-content: center;
@@ -833,6 +846,10 @@ textarea.form-control {
   .split-grid {
     grid-template-columns: 1fr;
   }
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -842,28 +859,63 @@ textarea.form-control {
   .nav-links {
     display: none;
   }
-  .hero-title {
-    font-size: 2.2rem;
+  .brand-title {
+    font-size: 1.2rem;
   }
+  .hero-title {
+    font-size: 2.1rem;
+  }
+  .hero-desc {
+    font-size: 1rem;
+  }
+
+  /* Floating action buttons on mobile */
   .floating-robot-btn {
-    bottom: 18px;
-    left: 18px;
-    width: 54px;
-    height: 54px;
-    font-size: 1.5rem;
+    bottom: 16px;
+    left: 16px;
+    width: 52px;
+    height: 52px;
+    font-size: 1.4rem;
   }
   .floating-whatsapp-btn {
-    bottom: 18px;
-    right: 18px;
-    width: 54px;
-    height: 54px;
-    font-size: 1.5rem;
+    bottom: 16px;
+    right: 16px;
+    width: 52px;
+    height: 52px;
+    font-size: 1.4rem;
   }
+
+  /* Chat Drawer on mobile */
   .chat-drawer {
-    left: 10px;
-    right: 10px;
-    bottom: 80px;
+    left: 12px;
+    right: 12px;
+    bottom: 78px;
     width: auto;
-    height: 520px;
+    max-width: none;
+    height: calc(100vh - 100px);
+  }
+
+  /* Admin Window on mobile */
+  .modal-overlay {
+    padding: 0.5rem;
+  }
+  .admin-window {
+    max-height: 96vh;
+    border-radius: var(--radius-md);
+  }
+  .admin-header {
+    padding: 0.9rem 1rem;
+  }
+  .admin-body {
+    padding: 1.1rem;
+  }
+  
+  .section-title {
+    font-size: 1.8rem;
+  }
+  
+  /* Input fields prevention of auto-zoom on mobile safari */
+  .form-control, .chat-input {
+    font-size: 16px !important;
   }
 }

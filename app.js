@@ -79,7 +79,7 @@ class ScholarLoopApp {
         id: 'msg_welcome_' + Date.now(),
         sessionId: this.currentSessionId,
         sender: 'bot',
-        content: `أهلاً بك في منصة **ScholarLoop**! 🎓\nأنا مساعدك الذكي المخصص للمنح الدراسية. يمكنك سؤالي عن شروط القبول، المستندات المطلوبة، أو طلب التواصل مع المستشار الأكاديمي.`,
+        content: `أهلاً بك في منصة **ScholarLoop**! 🎓\nأنا مساعدك الذكي المخصص للمنح الدراسية. يمكنك سؤالي عن نسبتك الأكاديمية (مثل الشهادة السودانية)، منح السعودية وتركيا وألمانيا، المستندات المطلوبة، أو طلب صياغة الخطابات!`,
         timestamp: new Date().toISOString()
       };
       await db.save('messages', welcomeMsg);
@@ -297,19 +297,28 @@ class ScholarLoopApp {
     btn.disabled = true;
 
     const params = {
+      letterType: document.getElementById('sopLetterType').value,
       studentName: document.getElementById('sopStudentName').value,
       major: document.getElementById('sopMajor').value,
+      targetUniversity: document.getElementById('sopTargetUniversity').value,
+      degreeLevel: document.getElementById('sopDegreeLevel').value,
+      recommenderTitle: document.getElementById('sopRecommenderTitle').value,
       accomplishments: document.getElementById('sopAccomplishments').value,
       reason: document.getElementById('sopReason').value,
       futurePlans: document.getElementById('sopFuturePlans').value,
       language: document.getElementById('sopLanguage').value
     };
 
-    const text = await adminApp.generateSOP(params);
+    const text = await adminApp.generateLetter(params);
     document.getElementById('sopOutputTextarea').value = text;
 
-    btn.innerHTML = '✨ إنشاء مسودة خطاب النوايا (SOP)';
+    btn.innerHTML = '✨ إنشاء مسودة الخطاب بالذكاء الاصطناعي';
     btn.disabled = false;
+
+    // On mobile, smooth scroll to result text area
+    if (window.innerWidth <= 768) {
+      document.getElementById('sopOutputTextarea').scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
   copySOPText() {
@@ -317,7 +326,7 @@ class ScholarLoopApp {
     if (!area.value) return alert('لا توجد مسودة لنسخها بعد!');
     area.select();
     document.execCommand('copy');
-    alert('تم نسخ خطاب النوايا بنجاح للحافظة!');
+    alert('تم نسخ الخطاب بنجاح للحافظة!');
   }
 
   async saveSOPToDB() {
@@ -325,26 +334,29 @@ class ScholarLoopApp {
     if (!text) return alert('الرجاء توليد المسودة أولاً قبل الحفظ!');
 
     const studentName = document.getElementById('sopStudentName').value || 'طالب';
+    const letterType = document.getElementById('sopLetterType').value;
     const sopRecord = {
       id: 'sop_' + Date.now(),
       studentName: studentName,
+      letterType: letterType,
       major: document.getElementById('sopMajor').value,
       content: text,
       createdAt: new Date().toISOString()
     };
 
     await db.save('sop_drafts', sopRecord);
-    alert(`تم حفظ مسودة خطاب النوايا للطالب (${studentName}) في قاعدة البيانات بنجاح!`);
+    alert(`تم حفظ مسودة الخطاب للطالب (${studentName}) في قاعدة البيانات بنجاح!`);
   }
 
   downloadSOPFile() {
     const text = document.getElementById('sopOutputTextarea').value;
     if (!text) return alert('لا توجد مسودة لتنزيلها!');
 
+    const letterType = document.getElementById('sopLetterType').value || 'Letter';
     const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = `SOP_ScholarLoop_${Date.now()}.txt`;
+    link.download = `ScholarLoop_${letterType}_${Date.now()}.txt`;
     link.click();
   }
 
@@ -365,7 +377,7 @@ class ScholarLoopApp {
             <th style="padding: 10px;">الاسم</th>
             <th style="padding: 10px;">كود الوصول</th>
             <th style="padding: 10px;">التاريخ</th>
-            <th style="padding: 10px;">مسودات SOP</th>
+            <th style="padding: 10px;">الخطابات المولّدة</th>
           </tr>
         </thead>
         <tbody>
@@ -376,7 +388,7 @@ class ScholarLoopApp {
                 <td style="padding: 10px;"><strong>${s.name}</strong></td>
                 <td style="padding: 10px;"><code style="background: rgba(212,175,55,0.15); padding: 2px 8px; border-radius: 4px; color: var(--gold-light);">${s.accessCode || 'N/A'}</code></td>
                 <td style="padding: 10px; font-size: 0.85rem; color: var(--text-muted);">${new Date(s.createdAt).toLocaleDateString()}</td>
-                <td style="padding: 10px;">${studentSops.length > 0 ? `✅ (${studentSops.length} مسودة)` : '⏳ لا يوجد'}</td>
+                <td style="padding: 10px;">${studentSops.length > 0 ? `✅ (${studentSops.length} خطاب)` : '⏳ لا يوجد'}</td>
               </tr>
             `;
           }).join('')}

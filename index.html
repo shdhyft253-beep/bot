@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ScholarLoop — المنصة الذكية للمنح الدراسية وصياغة الخطابات</title>
+  <meta name="description" content="منصة ScholarLoop توفر إرشاد متكامل للمنح الدراسية بمساعد ذكي يجيب بالعربية والإنجليزي، وخدمة صياغة كافة الخطابات الأكاديمية (SOP، التوصية، Cover Letter).">
+
+  <!-- Preload & Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@500;700;800&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-brand">
+      <div class="logo-badge">🎓</div>
+      <span class="brand-title">ScholarLoop</span>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="#services" class="nav-link">خدماتنا</a></li>
+      <li><a href="#requirements" class="nav-link">شروط التقديم</a></li>
+      <li><a href="#documents" class="nav-link">المستندات</a></li>
+      <li><a href="#advisor" class="nav-link">المستشار الأكاديمي</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button class="btn-outline-gold btn-sm" onclick="app.openStudentModal()">🔑 حسابي</button>
+      <button class="btn-gold btn-sm" onclick="app.toggleChat()">
+        <span>💬</span> اسأل المساعد
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <div class="hero-badge">
+        ✨ وجهتك الأولى نحو منح دراسية عالمية
+      </div>
+      <h1 class="hero-title">
+        منحة دراسية مناسبة <br>
+        <span class="gold-gradient-text">وإجابات موثوقة فوراً</span>
+      </h1>
+      <p class="hero-desc">
+        ترافقك من أول سؤال حتى مكتمل ملف التقديم: إرشاد ScholarLoop منصة للمنح، توضيح للشروط، وتحديد للمستندات — بمساعد ذكي يجيبك بالعربية والإنجليزي على مدار الساعة.
+      </p>
+
+      <div class="hero-actions">
+        <button class="btn-gold" style="padding: 0.85rem 1.8rem; font-size: 1.05rem;" onclick="app.toggleChat()">
+          🤖 ابدأ محادثة المساعد الذكي
+        </button>
+        <a href="#requirements" class="btn-outline-gold" style="padding: 0.85rem 1.8rem;">
+          شروط التقديم &larr;
+        </a>
+      </div>
+    </div>
+
+    <!-- Live Preview Card (Matching Screenshot #2) -->
+    <div class="hero-chat-preview">
+      <div class="preview-header">
+        <div class="bot-avatar-icon">🤖</div>
+        <div>
+          <div style="font-weight: 700; color: white;">ScholarLoop مساعد</div>
+          <div style="font-size: 0.8rem; color: #10B981;">متصل الآن • يجيب فوراً</div>
+        </div>
+      </div>
+      <div class="preview-body" id="heroPreviewMessages">
+        <div class="chat-bubble user">
+          نسبتي 80 في الشهادة السودانية، هل يمكنني التقديم على منحة أدرس في السعودية؟
+        </div>
+        <div class="chat-bubble bot">
+          نعم! نسبة 80% تتيح لك التنافس القوي في منحة (أدرس في السعودية) للكليات النظرية وإدارة الأعمال، والفرصة ممتازة للمنافسة! أخبرني بتخصصك المطلوب.
+        </div>
+      </div>
+      <div class="preview-footer">
+        <button class="btn-gold" style="width: 100%; justify-content: center;" onclick="app.toggleChat()">
+          ⚡ جرب المحادثة وتحدث مع المساعد
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="section-wrapper">
+    <div class="section-header">
+      <div class="section-subtitle">خدماتنا</div>
+      <h2 class="section-title">رحلة متكاملة نحو مقعدك الجامعي</h2>
+      <p class="section-desc">كل خدمة مصممة لتختصر عليك الطريق: من فهم الخيارات المتاحة حتى تقديم ملف واثق ومكتمل.</p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🏛️</div>
+        <h3 class="service-title">إرشاد المنح الدراسية</h3>
+        <p class="service-desc">نأخذك لفهم أنواع المنح المتاحة ومراحل التقديم، ونوضح ما تتطلبه كل مسار دراسي خطوة بخطوة.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🔍</div>
+        <h3 class="service-title">تقييم فرص القبول</h3>
+        <p class="service-desc">نساعد في بناء ملف تقديم قوي عبر فهم شروط الأهلية والمتطلبات الأكاديمية واللغوية الشائعة.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">📜</div>
+        <h3 class="service-title">صياغة كافة الخطابات الأكاديمية</h3>
+        <p class="service-desc">بإشراف المستشار الأكاديمي، نعد مسودة احترافية لخطابات النوايا (SOP)، التوصية، وCover Letter تعكس إنجازاتك وطموحك.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Requirements & Documents Section -->
+  <section id="documents" class="section-wrapper" style="background: rgba(15, 25, 56, 0.4); border-radius: var(--radius-lg); border: 1px solid var(--gold-border);">
+    <div class="split-grid">
+      
+      <!-- Required Documents -->
+      <div>
+        <div class="section-subtitle">المستندات المطلوبة</div>
+        <h2 class="section-title">جهّز ملفك بثقة</h2>
+        <p class="section-desc">قائمة مرجعية بالمستندات الأكثر طلباً في أغلب برامج المنح. اسأل المساعد الذكي عن تفاصيل أي مستند.</p>
+
+        <div class="documents-list">
+          <div class="doc-item">
+            <span class="doc-check">✓</span>
+            <div>
+              <strong>شهادة التخرج وكشف الدرجات المصدّق</strong>
+              <div style="font-size: 0.88rem; color: var(--text-muted);">الشهادة السودانية / الثانوية العامة أو البكالوريوس مترجمة رسمياً.</div>
+            </div>
+          </div>
+          <div class="doc-item">
+            <span class="doc-check">✓</span>
+            <div>
+              <strong>إثبات مستوى اللغة (IELTS / TOEFL أو ما يعادلها)</strong>
+              <div style="font-size: 0.88rem; color: var(--text-muted);">حسب اشتراطات الجامعة المحددة.</div>
+            </div>
+          </div>
+          <div class="doc-item">
+            <span class="doc-check">✓</span>
+            <div>
+              <strong>خطاب النوايا والخطابات الأكاديمية (SOP & Recommendation)</strong>
+              <div style="font-size: 0.88rem; color: var(--text-muted);">يقوم مسؤول المنصة بصياغتها خصيصاً لملفك بأعلى احترافية.</div>
+            </div>
+          </div>
+          <div class="doc-item">
+            <span class="doc-check">✓</span>
+            <div>
+              <strong>خطابات توصية أكاديمية أو مهنية</strong>
+              <div style="font-size: 0.88rem; color: var(--text-muted);">عادة من 2 إلى 3 أساتذة أو مشرفين.</div>
+            </div>
+          </div>
+          <div class="doc-item">
+            <span class="doc-check">✓</span>
+            <div>
+              <strong>السيرة الذاتية وسجل الإنجازات</strong>
+              <div style="font-size: 0.88rem; color: var(--text-muted);">تعد بصياغة أكاديمية موحدة.</div>
+            </div>
+          </div>
+          <div class="doc-item">
+            <span class="doc-check">✓</span>
+            <div>
+              <strong>جواز سفر ساري المدة وصور شخصية</strong>
+              <div style="font-size: 0.88rem; color: var(--text-muted);">صلاحية لا تقل عن 6 أشهر.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Application Steps -->
+      <div id="requirements" class="steps-card">
+        <div class="section-subtitle">شروط التقديم</div>
+        <h2 class="section-title" style="margin-bottom: 2rem;">ماذا تحتاج قبل أن تبدأ؟</h2>
+
+        <div class="step-row">
+          <div class="step-num">1</div>
+          <div>
+            <h3>حدد هدفك الأكاديمي ونسبتك</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">تحدث مع المساعد الذكي عن نسبتك الأكاديمية (مثل الشهادة السودانية) لتوجيهك للدولة الأنسب (السعودية، تركيا، ألمانيا، إلخ).</p>
+          </div>
+        </div>
+
+        <div class="step-row">
+          <div class="step-num">2</div>
+          <div>
+            <h3>جهّز خطاباتك ومستنداتك</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">اجمع الأوراق واستعن بأداة المنصة لصياغة خطاب النوايا وتوصيات الأوراق.</p>
+          </div>
+        </div>
+
+        <div class="step-row">
+          <div class="step-num">3</div>
+          <div>
+            <h3>تواصل مع المستشار</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">راسل المستشار الأكاديمي عبر واتساب لمراجعة ملفك ومتابعة التقديم رسمياً.</p>
+          </div>
+        </div>
+
+        <div class="disclaimer-box">
+          💡 <strong>ملاحظة:</strong> تختلف الشروط الدقيقة من منحة لأخرى. للمعلومة الدقيقة الخاصة بحالتك، تواصل مع المستشار الأكاديمي مباشرة.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Advisor Contact Banner -->
+  <section id="advisor" class="section-wrapper">
+    <div class="advisor-banner">
+      <div class="logo-badge" style="margin: 0 auto 1.2rem; width: 56px; height: 56px; font-size: 1.8rem;">📞</div>
+      <h2 class="section-title">مستشارك الأكاديمي على بعد رسالة</h2>
+      <p style="color: var(--text-muted); max-width: 650px; margin: 0 auto 1rem;">
+        عندما يحتاج سؤالك مراجعة بشرية — مراجعة ملف، تقييم فرص، أو نصيحة شخصية — راسل المستشار الأكاديمي مباشرة عبر واتساب وسيتجاوب معك في أقرب وقت.
+      </p>
+
+      <div class="advisor-phone-tag">+249 96 071 4750</div>
+
+      <div>
+        <a href="https://wa.me/249960714750" target="_blank" class="btn-gold" style="display: inline-flex; padding: 0.85rem 2.2rem; font-size: 1.1rem;">
+          💬 تواصل عبر واتساب
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background: #060B1B; padding: 2rem 1rem; border-top: 1px solid var(--gold-border); text-align: center; color: var(--text-muted);">
+    <div style="max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div class="nav-brand">
+        <div class="logo-badge" style="width: 32px; height: 32px; font-size: 1rem;">🎓</div>
+        <span class="brand-title" style="font-size: 1.2rem;">ScholarLoop</span>
+      </div>
+      <div>
+        © 2026 ScholarLoop — جميع الحقوق محفوظة
+      </div>
+      <div>
+        <button onclick="app.openAdminModal()" class="btn-outline-gold" style="padding: 0.4rem 1rem; font-size: 0.85rem;">
+          🛡️ دخول المسؤول (Admin)
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CRITICAL FLOATING ACTION BUTTONS -->
+  
+  <!-- Bottom-Left Floating Robot AI Assistant Icon -->
+  <button class="floating-robot-btn" onclick="app.toggleChat()" title="المساعد الذكي لـ ScholarLoop" id="floatingRobotBtn">
+    <div class="pulse-ring"></div>
+    🤖
+  </button>
+
+  <!-- Bottom-Right Floating WhatsApp Button -->
+  <a href="https://wa.me/249960714750" target="_blank" class="floating-whatsapp-btn" title="تواصل عبر واتساب (+249 96 071 4750)" id="floatingWhatsappBtn">
+    💬
+  </a>
+
+  <!-- Floating AI Chat Drawer Modal -->
+  <div class="chat-drawer" id="chatDrawer">
+    <div class="drawer-header">
+      <div class="header-info">
+        <div class="bot-avatar-icon" style="width: 34px; height: 34px; font-size: 1rem;">🤖</div>
+        <div>
+          <div style="font-weight: 700; color: white; font-size: 0.95rem;">مساعد ScholarLoop الذكي</div>
+          <div style="display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: #A0AEC0;">
+            <span class="status-dot"></span> متصل الآن • مجاني
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 6px; align-items: center;">
+        <button onclick="app.clearChatSession()" style="background: transparent; color: var(--gold-light); font-size: 0.9rem;" title="محادثة جديدة">🗑️</button>
+        <button class="drawer-close-btn" onclick="app.toggleChat()">✕</button>
+      </div>
+    </div>
+
+    <!-- Messages list -->
+    <div class="chat-messages-container" id="chatMessages">
+      <!-- Dynamic Messages injected via app.js -->
+    </div>
+
+    <!-- Suggestions chips -->
+    <div class="suggestion-chips" id="suggestionChips">
+      <button class="suggestion-chip" onclick="app.sendQuickQuery('نسبتي 80 في الشهادة السودانية هل أقدم للسعودية؟')">🇸🇦 الشهادة السودانية 80% والسعودية</button>
+      <button class="suggestion-chip" onclick="app.sendQuickQuery('ما هي المستندات المطلوبة؟')">📋 المستندات المطلوبة</button>
+      <button class="suggestion-chip" onclick="app.sendQuickQuery('التقديم على المنحة التركية')">🇹🇷 المنحة التركية</button>
+      <button class="suggestion-chip" onclick="app.sendQuickQuery('تواصل مع المستشار')">👨‍🎓 تواصل مع المستشار</button>
+    </div>
+
+    <!-- Input Box -->
+    <form class="chat-input-area" onsubmit="app.handleUserSend(event)">
+      <input type="text" id="chatInput" class="chat-input" placeholder="(English أو عربي)... اكتب سؤالك" autocomplete="off">
+      <button type="submit" class="send-btn" title="إرسال">➤</button>
+    </form>
+  </div>
+
+  <!-- Protected Admin SOP & Letters Generator Modal -->
+  <div class="modal-overlay" id="adminModal">
+    <div class="admin-window">
+      
+      <!-- Login View -->
+      <div id="adminLoginView" style="padding: 2.5rem 1.5rem; text-align: center; max-width: 450px; margin: 0 auto;">
+        <div class="logo-badge" style="margin: 0 auto 1.5rem; width: 64px; height: 64px; font-size: 2rem;">🛡️</div>
+        <h2 class="section-title" style="font-size: 1.8rem;">لوحة التحكم الإدارية</h2>
+        <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem;">مخصصة فقط لمسؤول الموقع لصياغة الخطابات الأكاديمية (SOP، التوصية، Cover Letter) وإدارة الطلاب.</p>
+
+        <form onsubmit="app.handleAdminLogin(event)">
+          <div class="form-group">
+            <input type="password" id="adminPasswordInput" class="form-control" placeholder="أدخل كلمة المرور (الافتراضية: admin123)" required>
+          </div>
+          <button type="submit" class="btn-gold" style="width: 100%; justify-content: center; padding: 0.8rem;">
+            تسجيل الدخول
+          </button>
+        </form>
+        <button class="btn-outline-gold" style="margin-top: 1.5rem; width: 100%;" onclick="app.closeAdminModal()">إلغاء</button>
+      </div>
+
+      <!-- Authenticated View -->
+      <div id="adminAuthView" style="display: none; height: 100%; display: flex; flex-direction: column;">
+        <div class="admin-header">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span style="font-size: 1.3rem;">🛡️</span>
+            <div>
+              <h3 style="color: white; font-size: 1.05rem;">أداة المسؤول — صياغة كافة الخطابات الأكاديمية (Academic Letters Generator)</h3>
+              <span style="font-size: 0.78rem; color: var(--gold-light);">صانع خطاب النوايا، التوصية، وCover Letter</span>
+            </div>
+          </div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="btn-outline-gold btn-sm" onclick="app.switchAdminTab('sop')">✍️ صانع الخطابات</button>
+            <button class="btn-outline-gold btn-sm" onclick="app.switchAdminTab('students')">👥 قاعدة الطلاب</button>
+            <button class="btn-outline-gold btn-sm" onclick="app.adminLogout()">خروج</button>
+            <button class="drawer-close-btn" onclick="app.closeAdminModal()">✕</button>
+          </div>
+        </div>
+
+        <div class="admin-body">
+          
+          <!-- Letters Generator Tab -->
+          <div id="tabSopGenerator">
+            <div class="admin-form-grid">
+              
+              <!-- Left Form -->
+              <div>
+                <h4 style="color: var(--gold-bright); margin-bottom: 1.2rem; font-size: 1.05rem;">✍️ بيانات الخطاب المطلوب:</h4>
+                
+                <form onsubmit="app.handleGenerateSOP(event)">
+                  <div class="form-group">
+                    <label class="form-label">نوع الخطاب المطلوب / Letter Type:</label>
+                    <select id="sopLetterType" class="form-control" style="background: #121E40; font-weight: 600; color: var(--gold-bright);">
+                      <option value="sop">1. خطاب النوايا / الرسالة التحفيزية (Statement of Purpose / SOP)</option>
+                      <option value="recommendation_academic">2. خطاب توصية أكاديمي (Academic Recommendation Letter)</option>
+                      <option value="recommendation_professional">3. خطاب توصية مهني (Professional Recommendation Letter)</option>
+                      <option value="cover_letter">4. خطاب تغطية للتقديم (Scholarship Cover Letter)</option>
+                      <option value="explanation_gap">5. خطاب تفسير سنة الفجوة / الظروف (Explanation Letter / Gap Year)</option>
+                      <option value="study_plan">6. خطة الدراسة والاهتمامات البحثية (Study Plan & Research Proposal)</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">اسم الطالب / Student Name:</label>
+                    <input type="text" id="sopStudentName" class="form-control" placeholder="مثال: حذيفة أحمد (HOZAIFA)" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">التخصص الأكاديمي / Major:</label>
+                    <input type="text" id="sopMajor" class="form-control" placeholder="مثال: الذكاء الاصطناعي / Computer Science & AI" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">الجامعة / المنحة والدولة المستهدفة:</label>
+                    <input type="text" id="sopTargetUniversity" class="form-control" placeholder="مثال: منحة أدرس في السعودية / جامعة الملك سعود">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">المرحلة الدراسية / Degree Level:</label>
+                    <select id="sopDegreeLevel" class="form-control" style="background: #121E40;">
+                      <option value="البكالوريوس (Bachelor)">البكالوريوس (Bachelor Degree)</option>
+                      <option value="الماجستير (Master)">الماجستير (Master Degree)</option>
+                      <option value="الدكتوراه (PhD)">الدكتوراه (PhD / Doctorate)</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">صفة الموصي / Recommender Title (لخطاب التوصية):</label>
+                    <input type="text" id="sopRecommenderTitle" class="form-control" placeholder="مثال: د. محمد علي - رئيس قسم علوم الحاسوب">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">أهم الإنجازات الأكاديمية والخبرات:</label>
+                    <textarea id="sopAccomplishments" class="form-control" placeholder="مثال: كورس في كورسيرا، شهادة C++، مشروع تخرج متفوق..."></textarea>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">سبب الاختيار أو الظروف الخاصة:</label>
+                    <textarea id="sopReason" class="form-control" placeholder="مثال: البيئة البحثية المتقدمة والتميز التكنولوجي في التخصص..."></textarea>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">الخطط المستقبلية للطالب:</label>
+                    <textarea id="sopFuturePlans" class="form-control" placeholder="مثال: تأسيس مشروع تقني مبتكر والمساهمة في تطوير المجال..."></textarea>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">لغة الخطاب / Language:</label>
+                    <select id="sopLanguage" class="form-control" style="background: #121E40;">
+                      <option value="ar">العربية (Arabic Formal)</option>
+                      <option value="en">الإنجليزية (English Academic)</option>
+                    </select>
+                  </div>
+
+                  <button type="submit" class="btn-gold" id="btnGenerateSOP" style="width: 100%; justify-content: center; padding: 0.85rem;">
+                    ✨ إنشاء مسودة الخطاب بالذكاء الاصطناعي
+                  </button>
+                </form>
+              </div>
+
+              <!-- Right Result Editor -->
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                  <h4 style="color: var(--gold-bright); font-size: 1.05rem;">📄 المسودة المولّدة (جاهزة للمراجعة والتعديل):</h4>
+                  <button class="btn-outline-gold btn-sm" onclick="app.copySOPText()">📋 نسخ النص</button>
+                </div>
+
+                <textarea id="sopOutputTextarea" class="form-control" style="min-height: 480px; font-size: 0.95rem; line-height: 1.8;" placeholder="ستظهر المسودة المولّدة هنا تلقائياً بناءً على اختيارك، ويمكنك مراجعتها وتعديل أي فقرة قبل إرسالها للطالب..."></textarea>
+
+                <div style="display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap;">
+                  <button class="btn-gold" style="flex: 1; justify-content: center;" onclick="app.saveSOPToDB()">💾 حفظ المسودة في قاعدة البيانات</button>
+                  <button class="btn-outline-gold" onclick="app.downloadSOPFile()">📥 تصدير ملف TXT</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Students Database Tab -->
+          <div id="tabStudents" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+              <h3 style="color: white;">👥 قاعدة بيانات الطلاب والمحفوظات</h3>
+              <button class="btn-outline-gold btn-sm" onclick="app.exportDatabaseBackup()">📥 تصدير نسخة احتياطية JSON</button>
+            </div>
+
+            <div id="studentsListTable" style="background: rgba(0,0,0,0.2); border-radius: var(--radius-md); padding: 1rem; border: 1px solid var(--gold-border); overflow-x: auto;">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Student Auth Modal -->
+  <div class="modal-overlay" id="studentAuthModal">
+    <div class="admin-window" style="max-width: 480px;">
+      <div class="admin-header">
+        <h3>🔑 حساب الطالب واسترجاع المحادثات</h3>
+        <button class="drawer-close-btn" onclick="app.closeStudentModal()">✕</button>
+      </div>
+      <div class="admin-body">
+        <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 1.5rem;">
+          أدخل اسمك أو كود الوصول الخاص بك لاسترجاع محادثاتك السابقة وتقدمك عبر أي جهاز!
+        </p>
+
+        <form onsubmit="app.handleStudentLogin(event)">
+          <div class="form-group">
+            <label class="form-label">الاسم الكامل / Full Name:</label>
+            <input type="text" id="studentNameLogin" class="form-control" placeholder="أدخل اسمك" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">كود الوصول الشخصي (Access Code):</label>
+            <input type="text" id="studentCodeLogin" class="form-control" placeholder="مثال: SL-8842 (اختياري)">
+          </div>
+
+          <button type="submit" class="btn-gold" style="width: 100%; justify-content: center; padding: 0.8rem;">
+            دخول وحفظ الجلسة
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Main Orchestrator Script -->
+  <script src="db.js"></script>
+  <script src="bot_engine.js"></script>
+  <script src="admin.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
