@@ -34,56 +34,6 @@ class ScholarLoopApp {
 
     // Load active or new session
     await this.initChatSession();
-
-    // Attach live listeners for Academic Letters Generator
-    this.setupLiveLetterGenerator();
-  }
-
-  setupLiveLetterGenerator() {
-    const fields = [
-      'sopLetterType',
-      'sopStudentName',
-      'sopMajor',
-      'sopTargetUniversity',
-      'sopDegreeLevel',
-      'sopRecommenderTitle',
-      'sopAccomplishments',
-      'sopReason',
-      'sopFuturePlans',
-      'sopLanguage'
-    ];
-
-    fields.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        el.addEventListener('input', () => this.triggerAutoGenerateSOP(true));
-        el.addEventListener('change', () => this.triggerAutoGenerateSOP(true));
-      }
-    });
-  }
-
-  async triggerAutoGenerateSOP(instant = true) {
-    const letterTypeEl = document.getElementById('sopLetterType');
-    if (!letterTypeEl) return;
-
-    const params = {
-      letterType: letterTypeEl.value,
-      studentName: document.getElementById('sopStudentName')?.value || '',
-      major: document.getElementById('sopMajor')?.value || '',
-      targetUniversity: document.getElementById('sopTargetUniversity')?.value || '',
-      degreeLevel: document.getElementById('sopDegreeLevel')?.value || '',
-      recommenderTitle: document.getElementById('sopRecommenderTitle')?.value || '',
-      accomplishments: document.getElementById('sopAccomplishments')?.value || '',
-      reason: document.getElementById('sopReason')?.value || '',
-      futurePlans: document.getElementById('sopFuturePlans')?.value || '',
-      language: document.getElementById('sopLanguage')?.value || 'ar'
-    };
-
-    const text = await adminApp.generateLetter(params, instant);
-    const textarea = document.getElementById('sopOutputTextarea');
-    if (textarea) {
-      textarea.value = text;
-    }
   }
 
   async initChatSession() {
@@ -298,15 +248,16 @@ class ScholarLoopApp {
   // Admin Modal Methods
   openAdminModal() {
     document.getElementById('adminModal').classList.add('active');
+    const pwdInput = document.getElementById('adminPasswordInput');
+    if (pwdInput) pwdInput.value = '';
+
     if (adminApp.checkAuth()) {
       document.getElementById('adminLoginView').style.display = 'none';
       document.getElementById('adminAuthView').style.display = 'flex';
       this.loadAdminStudentsTable();
-      this.triggerAutoGenerateSOP(true);
     } else {
       document.getElementById('adminLoginView').style.display = 'block';
       document.getElementById('adminAuthView').style.display = 'none';
-      const pwdInput = document.getElementById('adminPasswordInput');
       if (pwdInput) pwdInput.focus();
     }
   }
@@ -324,7 +275,6 @@ class ScholarLoopApp {
       document.getElementById('adminLoginView').style.display = 'none';
       document.getElementById('adminAuthView').style.display = 'flex';
       this.loadAdminStudentsTable();
-      this.triggerAutoGenerateSOP(true);
     } else {
       alert('كلمة المرور غير صحيحة! كلمة المرور الافتراضية هي: admin123');
     }
@@ -339,7 +289,6 @@ class ScholarLoopApp {
     if (tab === 'sop') {
       document.getElementById('tabSopGenerator').style.display = 'block';
       document.getElementById('tabStudents').style.display = 'none';
-      this.triggerAutoGenerateSOP(true);
     } else {
       document.getElementById('tabSopGenerator').style.display = 'none';
       document.getElementById('tabStudents').style.display = 'block';
@@ -350,13 +299,35 @@ class ScholarLoopApp {
   async handleGenerateSOP(e) {
     if (e) e.preventDefault();
     const btn = document.getElementById('btnGenerateSOP');
-    btn.innerHTML = '⏳ جاري صياغة مسودة الخطاب بالذكاء الاصطناعي...';
-    btn.disabled = true;
+    const origBtnText = btn ? btn.innerHTML : '✨ توليد الخطاب الآن / Generate Letter';
+    if (btn) {
+      btn.innerHTML = '⏳ جاري تأليف وصياغة الخطاب بالذكاء الاصطناعي...';
+      btn.disabled = true;
+    }
 
-    await this.triggerAutoGenerateSOP(false);
+    const params = {
+      letterType: document.getElementById('sopLetterType')?.value || 'sop',
+      studentName: document.getElementById('sopStudentName')?.value || '',
+      major: document.getElementById('sopMajor')?.value || '',
+      targetUniversity: document.getElementById('sopTargetUniversity')?.value || '',
+      degreeLevel: document.getElementById('sopDegreeLevel')?.value || '',
+      recommenderTitle: document.getElementById('sopRecommenderTitle')?.value || '',
+      accomplishments: document.getElementById('sopAccomplishments')?.value || '',
+      reason: document.getElementById('sopReason')?.value || '',
+      futurePlans: document.getElementById('sopFuturePlans')?.value || '',
+      language: document.getElementById('sopLanguage')?.value || 'ar'
+    };
 
-    btn.innerHTML = '✨ إنشاء مسودة الخطاب بالذكاء الاصطناعي';
-    btn.disabled = false;
+    const text = await adminApp.generateLetter(params, false);
+    const textarea = document.getElementById('sopOutputTextarea');
+    if (textarea) {
+      textarea.value = text;
+    }
+
+    if (btn) {
+      btn.innerHTML = '✨ توليد الخطاب الآن / Generate Letter';
+      btn.disabled = false;
+    }
 
     // On mobile, smooth scroll to result text area
     if (window.innerWidth <= 768) {
