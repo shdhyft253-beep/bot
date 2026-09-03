@@ -68,15 +68,15 @@
         <div class="bot-avatar-icon">🤖</div>
         <div>
           <div style="font-weight: 700; color: white;">ScholarLoop مساعد</div>
-          <div style="font-size: 0.8rem; color: #10B981;">متصل الآن • يجيب فوراً</div>
+          <div style="font-size: 0.8rem; color: #10B981;">متصل الآن • يجيب فوراً على كل الأسئلة</div>
         </div>
       </div>
       <div class="preview-body" id="heroPreviewMessages">
         <div class="chat-bubble user">
-          نسبتي 80 في الشهادة السودانية، هل يمكنني التقديم على منحة أدرس في السعودية؟
+          هل منح السعودية أو تركيا تقبل أعداداً كبيرة وهل تتطلب شهادة لغة؟
         </div>
         <div class="chat-bubble bot">
-          نعم! نسبة 80% تتيح لك التنافس القوي في منحة (أدرس في السعودية) للكليات النظرية وإدارة الأعمال، والفرصة ممتازة للمنافسة! أخبرني بتخصصك المطلوب.
+          نعم! منح السعودية تقبل عشرات الآلاف سنوياً، ولا تشترط شهادة لغة مسبقة حيث توفر سنة لغة مجانية وراتباً شهرياً وسكناً مؤثثاً وتذاكر طيران!
         </div>
       </div>
       <div class="preview-footer">
@@ -104,8 +104,8 @@
 
       <div class="service-card">
         <div class="service-icon">🔍</div>
-        <h3 class="service-title">تقييم فرص القبول</h3>
-        <p class="service-desc">نساعد في بناء ملف تقديم قوي عبر فهم شروط الأهلية والمتطلبات الأكاديمية واللغوية الشائعة.</p>
+        <h3 class="service-title">تقييم فرص القبول الأكاديمي</h3>
+        <p class="service-desc">تقييم كامل للأعداد المتاحة، شروط الأهلية والنسب والشهادات مثل الشهادة السودانية والثانوية العامة.</p>
       </div>
 
       <div class="service-card">
@@ -138,7 +138,7 @@
             <span class="doc-check">✓</span>
             <div>
               <strong>إثبات مستوى اللغة (IELTS / TOEFL أو ما يعادلها)</strong>
-              <div style="font-size: 0.88rem; color: var(--text-muted);">حسب اشتراطات الجامعة المحددة.</div>
+              <div style="font-size: 0.88rem; color: var(--text-muted);">أو الاستفادة من سنة اللغة المجانية في منح مثل السعودية وتركيا.</div>
             </div>
           </div>
           <div class="doc-item">
@@ -267,7 +267,7 @@
         <div>
           <div style="font-weight: 700; color: white; font-size: 0.95rem;">مساعد ScholarLoop الذكي</div>
           <div style="display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: #A0AEC0;">
-            <span class="status-dot"></span> متصل الآن • مجاني
+            <span class="status-dot"></span> متصل الآن • يجيب على كل الأسئلة
           </div>
         </div>
       </div>
@@ -284,15 +284,16 @@
 
     <!-- Suggestions chips -->
     <div class="suggestion-chips" id="suggestionChips">
-      <button class="suggestion-chip" onclick="app.sendQuickQuery('نسبتي 80 في الشهادة السودانية هل أقدم للسعودية؟')">🇸🇦 الشهادة السودانية 80% والسعودية</button>
-      <button class="suggestion-chip" onclick="app.sendQuickQuery('ما هي المستندات المطلوبة؟')">📋 المستندات المطلوبة</button>
-      <button class="suggestion-chip" onclick="app.sendQuickQuery('التقديم على المنحة التركية')">🇹🇷 المنحة التركية</button>
+      <button class="suggestion-chip" onclick="app.sendQuickQuery('هل تقبل المنحة أعداداً كبيرة؟')">📊 أعداد وطاقة القبول</button>
+      <button class="suggestion-chip" onclick="app.sendQuickQuery('هل جميع المنح تتطلب شهادة لغة؟')">🗣️ شهادة اللغة الإنجليزية</button>
+      <button class="suggestion-chip" onclick="app.sendQuickQuery('نسبتي 80 في الشهادة السودانية هل أقدم للسعودية؟')">🇸🇦 الشهادة السودانية والسعودية</button>
+      <button class="suggestion-chip" onclick="app.sendQuickQuery('تفاصيل السكن والراتب في المنح')">🏠 السكن والراتب الشهري</button>
       <button class="suggestion-chip" onclick="app.sendQuickQuery('تواصل مع المستشار')">👨‍🎓 تواصل مع المستشار</button>
     </div>
 
     <!-- Input Box -->
     <form class="chat-input-area" onsubmit="app.handleUserSend(event)">
-      <input type="text" id="chatInput" class="chat-input" placeholder="(English أو عربي)... اكتب سؤالك" autocomplete="off">
+      <input type="text" id="chatInput" class="chat-input" placeholder="(English أو عربي)... اسأل عن أي شيء في المنح" autocomplete="off">
       <button type="submit" class="send-btn" title="إرسال">➤</button>
     </form>
   </div>
