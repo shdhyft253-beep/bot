@@ -36,6 +36,30 @@ class ScholarLoopApp {
     await this.initChatSession();
   }
 
+  async generateSOPContent() {
+    const letterTypeEl = document.getElementById('sopLetterType');
+    if (!letterTypeEl) return;
+
+    const params = {
+      letterType: letterTypeEl.value,
+      studentName: document.getElementById('sopStudentName')?.value || '',
+      major: document.getElementById('sopMajor')?.value || '',
+      targetUniversity: document.getElementById('sopTargetUniversity')?.value || '',
+      degreeLevel: document.getElementById('sopDegreeLevel')?.value || '',
+      recommenderTitle: document.getElementById('sopRecommenderTitle')?.value || '',
+      accomplishments: document.getElementById('sopAccomplishments')?.value || '',
+      reason: document.getElementById('sopReason')?.value || '',
+      futurePlans: document.getElementById('sopFuturePlans')?.value || '',
+      language: document.getElementById('sopLanguage')?.value || 'ar'
+    };
+
+    const text = await adminApp.generateLetter(params, false);
+    const textarea = document.getElementById('sopOutputTextarea');
+    if (textarea) {
+      textarea.value = text;
+    }
+  }
+
   async initChatSession() {
     const sessions = await db.getAll('sessions');
     let activeSession = sessions.find(s => s.studentId === this.currentStudent.id);
@@ -277,6 +301,10 @@ class ScholarLoopApp {
       this.loadAdminStudentsTable();
     } else {
       alert('كلمة المرور غير صحيحة! كلمة المرور الافتراضية هي: admin123');
+      if (pwdInput) {
+        pwdInput.value = '';
+        pwdInput.focus();
+      }
     }
   }
 
@@ -299,33 +327,16 @@ class ScholarLoopApp {
   async handleGenerateSOP(e) {
     if (e) e.preventDefault();
     const btn = document.getElementById('btnGenerateSOP');
-    const origBtnText = btn ? btn.innerHTML : '✨ توليد الخطاب الآن / Generate Letter';
+    const originalText = btn ? btn.innerHTML : '';
     if (btn) {
-      btn.innerHTML = '⏳ جاري تأليف وصياغة الخطاب بالذكاء الاصطناعي...';
+      btn.innerHTML = '⏳ جاري صياغة وتوليد الخطاب الأكاديمي...';
       btn.disabled = true;
     }
 
-    const params = {
-      letterType: document.getElementById('sopLetterType')?.value || 'sop',
-      studentName: document.getElementById('sopStudentName')?.value || '',
-      major: document.getElementById('sopMajor')?.value || '',
-      targetUniversity: document.getElementById('sopTargetUniversity')?.value || '',
-      degreeLevel: document.getElementById('sopDegreeLevel')?.value || '',
-      recommenderTitle: document.getElementById('sopRecommenderTitle')?.value || '',
-      accomplishments: document.getElementById('sopAccomplishments')?.value || '',
-      reason: document.getElementById('sopReason')?.value || '',
-      futurePlans: document.getElementById('sopFuturePlans')?.value || '',
-      language: document.getElementById('sopLanguage')?.value || 'ar'
-    };
-
-    const text = await adminApp.generateLetter(params, false);
-    const textarea = document.getElementById('sopOutputTextarea');
-    if (textarea) {
-      textarea.value = text;
-    }
+    await this.generateSOPContent();
 
     if (btn) {
-      btn.innerHTML = '✨ توليد الخطاب الآن / Generate Letter';
+      btn.innerHTML = '✨ توليد الخطاب الآن (Generate Letter)';
       btn.disabled = false;
     }
 

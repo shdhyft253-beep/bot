@@ -314,7 +314,7 @@
             <label class="form-label" for="adminPasswordInput">كلمة مرور المسؤول (Admin Password):</label>
             <input type="password" id="adminPasswordInput" class="form-control" placeholder="admin123" autocomplete="current-password" required>
           </div>
-          <button type="submit" class="btn-gold" style="width: 100%; justify-content: center; padding: 0.8rem; font-size: 1.05rem;">
+          <button type="submit" class="btn-gold" style="width: 100%; justify-content: center; padding: 0.85rem; font-size: 1.05rem;">
             🔑 تسجيل الدخول للوحة المسؤول
           </button>
         </form>
@@ -414,8 +414,8 @@
                     </select>
                   </div>
 
-                  <button type="submit" class="btn-gold" id="btnGenerateSOP" style="width: 100%; justify-content: center; padding: 0.95rem; font-size: 1.05rem; font-weight: 700; margin-top: 0.5rem; box-shadow: 0 4px 20px rgba(212,175,55,0.35);">
-                    ✨ توليد الخطاب الآن / Generate Letter
+                  <button type="submit" class="btn-gold" id="btnGenerateSOP" style="width: 100%; justify-content: center; padding: 0.9rem; font-size: 1.05rem; font-weight: 700; margin-top: 0.5rem;">
+                    ✨ توليد الخطاب الآن (Generate Letter)
                   </button>
                 </form>
               </div>
@@ -427,7 +427,7 @@
                   <button class="btn-outline-gold btn-sm" id="btnCopySOP" onclick="app.copySOPText()">📋 نسخ النص</button>
                 </div>
 
-                <textarea id="sopOutputTextarea" class="form-control" style="min-height: 480px; font-size: 0.95rem; line-height: 1.8;" placeholder="عند ملء البيانات والنقر على زر (توليد الخطاب الآن)، سيقوم النظام بتأليف وصياغة الخطاب الأكاديمي المخصص كاملاً هنا لتتمكن من مراجعته وتعديله ونسخه بسهولة..."></textarea>
+                <textarea id="sopOutputTextarea" class="form-control" style="min-height: 480px; font-size: 0.95rem; line-height: 1.8;" placeholder="ستظهر المسودة المولّدة هنا كاملة ومنسقة بعد تعبئة البيانات والضغط على زر (توليد الخطاب الآن)، لتتمكن من مراجعتها أو نسخها..."></textarea>
 
                 <div style="display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap;">
                   <button class="btn-gold" style="flex: 1; justify-content: center;" onclick="app.saveSOPToDB()">💾 حفظ المسودة في قاعدة البيانات</button>
